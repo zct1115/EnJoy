@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ckkj.enjoy">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Required 一些系统要求的权限，如访问网络等 -->
+    <uses-permission android:name="com.lvr.threerecom.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".app.AppApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="24631898-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="f17d238e3d463f2100a38f2332ebae1e" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCQvxVTAvoAKeuDKlM+bTWq9phj8RIj1tnerDMjZ3ra5pt6yOw79ca7Yb5CvJKQ8khFTyTDUhm7pT0jrVRF/HgVF583vKL3A2GxSSzgIXifdxwKaYGS4a12dyR+i7aHbNAHVGNt8nSS4HO+5WnRCWOTiVU3TVfaRKeckHG9Zv7vM4smL7WPgnnifPP78hFfZS9kG1oV7MGv+fgWiRB4AlU2yEOUcwujcO70Wpt6Rkg9pSE5M1s5K/3VLjy1Lo00h8PWT+NpzYLOu2k6ae1qCaw6XIjYzn6lhIDlj7TIbHA0TndmIZxlFJF376ToPIr7Qdr+Th2yl63+iBb1UNcu3lIDAgMBAAECggEAA1SiRPq4jfBo/uemarVQmtJ5xzLw2+pBsSH9Oz9SUF8mDLk61lZdcEpbemWkablpeE7N5cCp3ut6cKu4WLPqf3G/tCSfC1gEk3O/mJiskd7HwmWTGbIfr64mJNNKK+uRDdofP5RookiP4UCeIrU4mVh7oX4iG1+hC7U3KMiJ7S8VagBWxfsfOOvCoXHL7+qEV8wpOP9nYuMl3iiTX8kUu0X+kydyiFfmg7BTgJEvgm4qbk3T+uVGitEAv6txdf4H3wlX/48Ir5xHuU5oKybEoB9jTEiJuQEjNoIhpaPJ5s8DtgR6iUoavoSHQR5iQCKIqQthJCe61W1W7t1LkFheIQKBgQDpq5qYohY3UweYgx4IhBdfVeJXn47FcnTosZahwAmdCv2LvxoK3b8jGK0CJrlEtw+1sy6/p0VBD2bWC9k4H+mCfPLEcKa45d1DI8BuIabMGN1ndhT/r5/hRodWfIiQBoIkXIpy3eDzKixDO5TAWQlh7u/wbcHtda0VSZYtd86k3wKBgQCelBat2WipFsLYNjWVINQ4PE/siUYnT2x8f7Gpu/fz3er/ngBw2acgISM2CL02hPDx5QpU0443qgPo7Ia18LcQRtLCeEwYOt5DBKUsLLnUxoCWPLnVnc+JRdl85G56j2zUj1SFk/6lqup3H9CkLfiB9Y6ycNM1IkpPDB1kLIwzXQKBgDO8KLhOeri5C196+DVOeZZD/58C1qtkkfnLB9y8FeTNQCGmp+9r9RuiJPvq8u4B0dqa12jbcfvbmxsc+HTyq9KWM3HGt0MMsZZh3gMENFfP0YVMoY2SpsVLxj8hx2KL7lh6nLSd52YvGimwkVic3fTu3/TNeDhI649hAX0Dn57lAoGAI3QATgXZPFR2Y1hbSmf4ikoRpFRcdtVu77asxcHcgY0PyO5OMuy2TJyb/qydgN7f73TBho11skQ0c5LN20dh5iWvYQL8ID6pClqzgtjNAyEOBoi1E2kgyRPwt9dqS8RdFHim8OZRfEBmAxP91XbhpEx+Bq7qyWpNKrcOqyK6hZECgYEApTl0uKHMv3q2P+FrgR9+bDywl/bfnoyX30QjibiS1FfrJ9GqUk+8pAe8YueiMdHTUOuW0BjRnifV8J4M+EvJB0jDM0tobAnAF2kVpOnAeOT9EoeJuyAom24QVl9SSsN8XMQnB9BOzz+T63c6hYzYUpAzrYnv52YF+SjbBu3A+xE=" />
+
+        <activity android:name=".ui.movie.MoiveActivity" />
+        <activity android:name=".ui.movie.MovieDetilsActivity" />
+        <activity android:name=".ui.movie.ActorActivity" />
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.movie.NewMoiveActivity" />
+        <activity android:name=".ui.music.MusicActivity"></activity>
+    </application>
+
+</manifest>

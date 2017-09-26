@@ -11,5 +11,5 @@ import io.reactivex.Observable;
  */
 
 public interface MusicModelImp {
-    Observable<List<WrapperSongListInfo.SongListInfo>> getWrapperSongListInfo(String format, String from, String method, int page_size, int page_no);
+    Observable<List<WrapperSongListInfo.SongListInfo>> loadSongListAll(String format, String from, String method, int page_size, int page_no);
 }

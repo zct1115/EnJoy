@@ -5,4 +5,5 @@ package com.ckkj.enjoy.ui.music.presenter;
  */
 
 public interface MusicPresenterImp {
+    void requestSongListAll(String format, String from, String method, int page_size, int page_no);
 }

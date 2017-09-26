@@ -34,7 +34,6 @@ public class MyFragment extends BaseFragment {
     IRecyclerView irvMusicMy;
     @BindView(R.id.iv_broadcast)
     ImageView ivBroadcast;
-    Unbinder unbinder;
     private List<MusicMyItem> mList;
     private Context mcontext;
     private MusicMyAdapter mMusicMyAdapter;

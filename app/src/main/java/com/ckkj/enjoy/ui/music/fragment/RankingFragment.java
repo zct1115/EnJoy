@@ -1,5 +1,6 @@
 package com.ckkj.enjoy.ui.music.fragment;
 
+import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.base.BaseFragment;
 
 /**
@@ -10,7 +11,7 @@ import com.ckkj.enjoy.base.BaseFragment;
 public class RankingFragment extends BaseFragment {
     @Override
     protected int getLayoutResource() {
-        return 0;
+        return R.layout.fragment_songlist;
     }
 
     @Override

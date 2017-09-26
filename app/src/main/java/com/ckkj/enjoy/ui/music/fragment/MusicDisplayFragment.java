@@ -58,7 +58,7 @@ public class MusicDisplayFragment extends BaseFragment {
     }
 
     private  List<BaseFragment> createListFragments() {
-        List<BaseFragment> list = new ArrayList<>();
+        List<BaseFragment> list = new ArrayList<BaseFragment>();
         list.add(new SongListFragment());
         list.add(new RankingFragment());
         return list;

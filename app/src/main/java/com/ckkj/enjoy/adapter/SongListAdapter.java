@@ -25,12 +25,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
     private Context mcontext;
     private List<WrapperSongListInfo.SongListInfo> songListInfos;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
     public SongListAdapter(Context context, List<WrapperSongListInfo.SongListInfo> songListInfos) {
         this.mcontext = context;
         this.songListInfos = songListInfos;
-        inflater = LayoutInflater.from(mcontext);
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return songListInfos.size()-2;
     }
 
     public class SongListViewHolder extends RecyclerView.ViewHolder {

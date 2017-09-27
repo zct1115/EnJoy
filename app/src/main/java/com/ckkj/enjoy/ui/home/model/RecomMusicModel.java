@@ -1,0 +1,18 @@
+package com.ckkj.enjoy.ui.home.model;
+
+import com.ckkj.enjoy.bean.SongDetailInfo;
+import com.ckkj.enjoy.bean.SongListDetail;
+
+
+import java.util.List;
+
+import io.reactivex.Observable;
+
+/**
+ * Created by lvr on 2017/5/22.
+ */
+
+public interface RecomMusicModel {
+    Observable<List<SongListDetail.SongDetail>> loadRecomMusic(String from, String version, String format, String method, int num);
+    Observable<SongDetailInfo> loadSongDetail(String from, String version, String format, String method, String songid);
+}

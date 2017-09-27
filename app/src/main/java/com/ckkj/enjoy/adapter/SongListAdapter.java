@@ -1,6 +1,7 @@
 package com.ckkj.enjoy.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         holder.mRlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               /* Intent intent = new Intent(mcontext, MusicSongListDetailActivity.class);
+                intent.putExtra("songListId",info.getListid());
+                intent.putExtra("islocal", false);
+                intent.putExtra("songListPhoto", info.getPic_300());
+                intent.putExtra("songListname", info.getTitle());
+                intent.putExtra("songListTag", info.getTag());
+                intent.putExtra("songListCount", info.getListenum());
+                mcontext.startActivity(intent);*/
             }
         });
     }

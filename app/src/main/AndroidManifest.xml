@@ -51,6 +51,39 @@
         <activity android:name=".ui.movie.NewMoiveActivity" />
         <activity android:name=".ui.music.MusicActivity"></activity>
         <activity android:name=".ui.music.MusicRankingListDetailActivity"></activity>
+        <activity android:name=".ui.music.PlayingActivity"></activity>
+
+        <service
+            android:name=".sensorcollection.service.SensorService"
+            android:process="com.sensor.service">
+            <intent-filter>
+                <action android:name="com.sensor.service" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.MediaPlayService" />
+
+        <receiver android:name=".broadcastreceiver.ProgressReceiver">
+            <intent-filter>
+                <action android:name="com.lvr.progress" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".broadcastreceiver.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.ckkj.enjoy" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

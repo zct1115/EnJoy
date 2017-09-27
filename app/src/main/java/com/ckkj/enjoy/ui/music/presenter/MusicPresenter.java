@@ -2,6 +2,7 @@ package com.ckkj.enjoy.ui.music.presenter;
 
 import com.ckkj.enjoy.bean.WrapperSongListInfo;
 import com.ckkj.enjoy.ui.music.model.MusicModel;
+import com.ckkj.enjoy.ui.music.presenter.Imp.MusicPresenterImp;
 import com.ckkj.enjoy.ui.music.view.MusicView;
 
 import java.util.List;
@@ -47,4 +48,6 @@ public class MusicPresenter implements MusicPresenterImp {
              }
          });
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.ckkj.enjoy.ui.music.presenter;
+package com.ckkj.enjoy.ui.music.presenter.Imp;
 
 /**
  * Created by zct11 on 2017/9/25.

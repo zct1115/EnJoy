@@ -50,6 +50,7 @@
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.movie.NewMoiveActivity" />
         <activity android:name=".ui.music.MusicActivity"></activity>
+        <activity android:name=".ui.music.MusicRankingListDetailActivity"></activity>
     </application>
 
 </manifest>

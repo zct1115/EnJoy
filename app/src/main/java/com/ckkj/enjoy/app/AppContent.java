@@ -32,6 +32,6 @@ public class AppContent {
     public static final String MUSIC_URL_METHOD_SONG_DETAIL ="baidu.ting.song.play";
     public static final String MUSIC_URL_METHOD_RANKING_DETAIL ="baidu.ting.billboard.billList";
     public static final String MUSIC_URL_METHOD_RECOM ="baidu.ting.song.getEditorRecommend";
-
+    public static final  int MUSIC_URL_RANKINGLIST_FLAG = 1;
 
 }

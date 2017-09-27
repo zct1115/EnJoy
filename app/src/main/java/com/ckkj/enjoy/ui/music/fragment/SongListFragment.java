@@ -3,6 +3,7 @@ package com.ckkj.enjoy.ui.music.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,16 +74,16 @@ public class SongListFragment extends BaseFragment implements MusicView,OnLoadMo
                 //第一次加载
                 mList.clear();
                 mList.addAll(songListInfos);
-                System.out.println("初次加载数据集大小："+mList.size());
+                Log.d("SongListFragment", "初次加载数据集大小："+mList.size());
                 adapter.notifyDataSetChanged();
             } else {
                 //加载更多
                 mList.addAll(songListInfos);
-                System.out.println("数据集大小："+mList.size());
+                Log.d("SongListFragment", "数据集大小：" + mList.size());
                 adapter.notifyDataSetChanged();
             }
         } else {
-            System.out.println("数据集中数据条目："+songListInfos.size());
+            Log.d("SongListFragment", "数据集中数据条目：" + songListInfos.size());
             startPage--;
             mFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
         }
@@ -91,7 +92,7 @@ public class SongListFragment extends BaseFragment implements MusicView,OnLoadMo
     @Override
     public void onLoadMore() {
         ++startPage;
-        System.out.println("当前加载的页面："+startPage);
+        Log.d("SongListFragment", "当前加载的页面：" + startPage);
         musicPresenter.requestSongListAll(AppContent.MUSIC_URL_FORMAT,AppContent.MUSIC_URL_FROM,AppContent.MUSIC_URL_METHOD_GEDAN,pageSize,startPage);
         mFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
     }

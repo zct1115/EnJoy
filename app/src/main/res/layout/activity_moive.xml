@@ -23,11 +23,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
+        <com.aspsine.irecyclerview.IRecyclerView
             android:id="@+id/recycle"
+            app:loadMoreEnabled="true"
+            app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
+        </com.aspsine.irecyclerview.IRecyclerView>
     </FrameLayout>
 
 

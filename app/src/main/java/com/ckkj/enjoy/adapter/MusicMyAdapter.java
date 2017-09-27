@@ -66,7 +66,25 @@ public class MusicMyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setTopItemValues((TopViewHolder) holder, position);
         } else if (holder instanceof BottomViewHolder) {
             setBottomItemValues((BottomViewHolder) holder, position);
+        }else {
+            setMiddleValues((MiddleViewHolder)holder,position);
         }
+    }
+
+    private void setMiddleValues(final MiddleViewHolder holder, final int position) {
+         holder.expand_img.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mOnItemClickListenr.onMiddleClick(holder.expand_img,position);
+             }
+         });
+        holder.expand_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListenr.onMiddleClick(holder.expand_menu,position);
+            }
+        });
+
     }
 
     private void setBottomItemValues(BottomViewHolder holder, int position) {
@@ -121,8 +139,15 @@ public class MusicMyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
     public class MiddleViewHolder extends RecyclerView.ViewHolder{
+        private ImageView expand_img;
+        private ImageView expand_menu;
+        private TextView expandtitle;
+
         public MiddleViewHolder(View itemView) {
             super(itemView);
+            expand_img = (ImageView) itemView.findViewById(R.id.iv_expand_img);
+            expand_menu = (ImageView) itemView.findViewById(R.id.iv_expand_menu);
+            expandtitle = (TextView) itemView.findViewById(R.id.iv_expand_title);
         }
     }
     public class BottomViewHolder extends RecyclerView.ViewHolder{
@@ -141,6 +166,7 @@ public class MusicMyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public interface onItemClickListenr {
         void onItemClick(int position);
+        void onMiddleClick(View v,int position);
     }
 
     public void setOnItemClickListenr(onItemClickListenr onItemClickListenr) {

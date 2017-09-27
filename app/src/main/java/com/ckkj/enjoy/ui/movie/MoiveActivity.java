@@ -14,11 +14,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.aspsine.irecyclerview.IRecyclerView;
+import com.aspsine.irecyclerview.OnLoadMoreListener;
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.adapter.MovieAdapter;
 import com.ckkj.enjoy.anims.LandingAnimator;
@@ -31,6 +34,7 @@ import com.ckkj.enjoy.bean.NewMovie;
 import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.utils.CheckNetwork;
+import com.ckkj.enjoy.widget.LoadMoreFooterView;
 import com.ckkj.enjoy.widget.LoadingDialog;
 
 import java.util.ArrayList;
@@ -44,17 +48,19 @@ import butterknife.OnClick;
 /**
  * 显示电影列表页面
  */
-public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapter.onItemClickListenr {
+public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapter.onItemClickListenr,OnLoadMoreListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recycle)
-    RecyclerView recycle;
+    IRecyclerView recycle;
 
     private MovieAdapter adapter;
     private MoviePresenterImpl moviePresenter;
     private List<Movie.SubjectsBean> movies = new ArrayList<Movie.SubjectsBean>();
-
+    private int count=20;
+    private int start=0;
+    private LoadMoreFooterView mFooterView;
 
     /**
      * 实例化P
@@ -72,8 +78,8 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("电影");
         LoadingDialog.showDialogForLoading(this);
-        moviePresenter.requestHotMovie();
 
+        initData(movies);
         /*回退键触发事件*/
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,13 +97,16 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
         /*设置布局到RecycleView*/
         recycle.setLayoutManager(manager);
         /*设置RecycleView刷新*/
+        recycle.setOnLoadMoreListener(this);
         //recycle.setOnRefreshListener(this);
         /*设置RecycleView点击事件*/
         adapter.setOnItemClickListenr(this);
         /*设置RecycleView每一项动画效果*/
         recycle.setItemAnimator(new LandingAnimator());
         /*设置适配器*/
-        recycle.setAdapter(adapter);
+        recycle.setIAdapter(new ScaleInAnimationAdapter(adapter));
+        mFooterView=(LoadMoreFooterView) recycle.getLoadMoreFooterView();
+        moviePresenter.requestHotMovie(count,start);
     }
 
     /**
@@ -106,9 +115,24 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
      */
     @Override
     public void returnMusicInfo(List<Movie.SubjectsBean> movie) {
-        movies = movie;
+
        /* 初始化数据*/
-        initData(movie);
+        if(movie!=null){
+            if(start==0){
+                movies.clear();
+                movies.addAll(movie);
+                adapter.notifyDataSetChanged();
+            }else {
+                if(movie.size()<count){
+                  count= movie.size();
+                }
+                movies.addAll(movie);
+                adapter.notifyDataSetChanged();
+            }
+        }else {
+            start--;
+            mFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+        }
         LoadingDialog.cancelDialogForLoading();
 
     }
@@ -159,5 +183,21 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
                     .makeScaleUpAnimation(imageView, imageView.getWidth() / 2, imageView.getHeight() / 2, 0, 0);
             ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
         }
+    }
+
+    @Override
+    public void onLoadMore() {
+        Log.d("MoiveActivity", "tt");
+
+        if(count<20){
+            //moviePresenter.requestHotMovie(count,start);
+            mFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+
+        }else {
+            start=start+count;
+            moviePresenter.requestHotMovie(count,start);
+            mFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
+        }
+
     }
 }

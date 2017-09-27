@@ -5,7 +5,7 @@ package com.ckkj.enjoy.ui.movie.presenter;
  */
 
 public interface MoviePresenter {
-    void requestHotMovie();
+    void requestHotMovie(int count,int start);
 
     void requestHotMovieById(String id);
 

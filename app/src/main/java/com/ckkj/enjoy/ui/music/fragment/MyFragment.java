@@ -27,7 +27,7 @@ import butterknife.Unbinder;
  * Created by Ting on 2017/9/25.
  */
 
-public class MyFragment extends BaseFragment {
+public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemClickListenr{
 
 
     @BindView(R.id.irv_music_my)
@@ -92,4 +92,17 @@ public class MyFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onMiddleClick(View v, int position) {
+        switch (v.getId()){
+            case R.id.iv_expand_img:
+
+                break;
+        }
+    }
 }

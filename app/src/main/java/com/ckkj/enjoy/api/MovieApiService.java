@@ -25,7 +25,7 @@ public interface MovieApiService {
      * 豆瓣热映电影，每日更新
      */
     @GET("v2/movie/in_theaters")
-    Observable<Movie> getHotMovie();
+    Observable<Movie> getHotMovie(@Query("count") int count,@Query("start") int start);
 
     /**
      * 获取电影详情

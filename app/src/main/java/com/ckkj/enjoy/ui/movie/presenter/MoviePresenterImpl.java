@@ -35,8 +35,8 @@ public class MoviePresenterImpl implements MoviePresenter {
     }
 
     @Override
-    public void requestHotMovie() {
-        model.getHotMovie().subscribe(new Observer<List<Movie.SubjectsBean>>() {
+    public void requestHotMovie(int count,int start) {
+        model.getHotMovie(count,start).subscribe(new Observer<List<Movie.SubjectsBean>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 RxDisposeManager.get().add("rating",d);

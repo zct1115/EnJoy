@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.bean.SongDetailInfo;
 import com.ckkj.enjoy.bean.WrapperSongListInfo;
+import com.ckkj.enjoy.ui.music.MusicSongListDetailActivity;
 import com.ckkj.enjoy.utils.DisplayUtil;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
 
@@ -60,14 +61,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         holder.mRlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent(mcontext, MusicSongListDetailActivity.class);
+                Intent intent = new Intent(mcontext, MusicSongListDetailActivity.class);
                 intent.putExtra("songListId",info.getListid());
                 intent.putExtra("islocal", false);
                 intent.putExtra("songListPhoto", info.getPic_300());
                 intent.putExtra("songListname", info.getTitle());
                 intent.putExtra("songListTag", info.getTag());
                 intent.putExtra("songListCount", info.getListenum());
-                mcontext.startActivity(intent);*/
+                mcontext.startActivity(intent);
             }
         });
     }

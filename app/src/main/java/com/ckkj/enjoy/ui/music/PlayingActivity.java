@@ -403,12 +403,21 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
 
         @Override
         protected String doInBackground(String... params) {
-            FutureTarget<File> future = Glide.with(AppApplication.getAppContext())
-                    .load(params[0])
-                    .downloadOnly(100, 100);
+            FutureTarget<File> future=null;
+            if(params[0].isEmpty()){
+                future = Glide.with(AppApplication.getAppContext())
+                        .load("http://img.hb.aicdn.com/503f52bdc99b13e7a0ac6fda8f9007ab3a067eb256ab-XjWeNW_fw658")
+                        .downloadOnly(100, 100);
+            }else {
+               future = Glide.with(AppApplication.getAppContext())
+                        .load(params[0])
+                        .downloadOnly(100, 100);
+            }
+
             try {
-                File cacheFile = future.get();
-                mPath = cacheFile.getAbsolutePath();
+                    File cacheFile = future.get();
+                    mPath = cacheFile.getAbsolutePath();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

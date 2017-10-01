@@ -48,7 +48,7 @@
                         android:layout_toLeftOf="@+id/iv_bar_music"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:src="@drawable/ic_noselect_me"/>
+                        android:src="@drawable/ic_select_me"/>
 
                     <ImageView
                         android:id="@+id/iv_bar_music"

@@ -15,6 +15,7 @@ import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.adapter.MusicMyAdapter;
 import com.ckkj.enjoy.base.BaseFragment;
 import com.ckkj.enjoy.bean.MusicMyItem;
+import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
         irvMusicMy.setLayoutManager(new LinearLayoutManager(mcontext));
         // TODO: 2017/4/26  先默认不能刷新
 //        mIrvMusicMy.setOnRefreshListener(this);
+        mMusicMyAdapter.setOnItemClickListener(this);
         irvMusicMy.setItemAnimator(new DefaultItemAnimator());
         irvMusicMy.setIAdapter(mMusicMyAdapter);
         irvMusicMy.addItemDecoration(new DividerItemDecoration(mcontext, DividerItemDecoration.VERTICAL));
@@ -94,7 +96,21 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
 
     @Override
     public void onItemClick(int position) {
-
+         switch (position){
+             case 0:
+                 /*本地音乐*/
+                 break;
+             case 1:
+                 /*最近播放*/
+                 startActivity(LastPlayMusicActivity.class);
+                 break;
+             case 2:
+                 /*下载管理*/
+                 break;
+             case 3:
+                 /*我的歌手*/
+                 break;
+         }
     }
 
     @Override

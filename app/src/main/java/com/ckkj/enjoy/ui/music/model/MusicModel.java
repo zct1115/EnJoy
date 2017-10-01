@@ -6,6 +6,7 @@ import com.ckkj.enjoy.app.AppContent;
 import com.ckkj.enjoy.bean.RankingListDetail;
 import com.ckkj.enjoy.bean.RankingListItem;
 import com.ckkj.enjoy.bean.SongDetailInfo;
+import com.ckkj.enjoy.bean.SongListDetail;
 import com.ckkj.enjoy.bean.WrapperSongListInfo;
 import com.ckkj.enjoy.client.RetrofitClient;
 
@@ -65,5 +66,17 @@ public class MusicModel implements MusicModelImp{
         RetrofitClient retrofitClient = RetrofitClient.getInstance(AppApplication.getAppContext(), MusicApiService.MUSIC_URL);
         MusicApiService api = retrofitClient.create(MusicApiService.class);
         return api.getSongDetail(from,version,format,  method, songid).compose(RetrofitClient.schedulersTransformer);
+    }
+
+    @Override
+    public Observable<List<SongListDetail.SongDetail>> loadSongListDetail(String format, String from, String method, String listid) {
+        RetrofitClient retrofitClient = RetrofitClient.getInstance(AppApplication.getAppContext(), MusicApiService.MUSIC_URL);
+        MusicApiService api = retrofitClient.create(MusicApiService.class);
+        return api.getSongListDetail(format, from, method, listid).map(new Function<SongListDetail, List<SongListDetail.SongDetail>>() {
+            @Override
+            public List<SongListDetail.SongDetail> apply(SongListDetail detail) throws Exception {
+                return detail.getContent();
+            }
+        }).compose(RetrofitClient.schedulersTransformer);
     }
 }

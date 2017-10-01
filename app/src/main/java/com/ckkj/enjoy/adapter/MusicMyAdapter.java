@@ -127,6 +127,8 @@ public class MusicMyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemCount() {
         return mList.size()+1;
     }
+
+
     public class TopViewHolder extends RecyclerView.ViewHolder{
         private ImageView mIvPhoto;
         private TextView mTvContent;
@@ -169,7 +171,7 @@ public class MusicMyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onMiddleClick(View v,int position);
     }
 
-    public void setOnItemClickListenr(onItemClickListenr onItemClickListenr) {
+    public void setOnItemClickListener(onItemClickListenr onItemClickListenr) {
         this.mOnItemClickListenr = onItemClickListenr;
     }
 

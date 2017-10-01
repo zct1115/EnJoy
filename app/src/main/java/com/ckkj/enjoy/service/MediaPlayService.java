@@ -7,10 +7,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ckkj.enjoy.app.AppApplication;
@@ -19,6 +21,7 @@ import com.ckkj.enjoy.bean.SongDetailInfo;
 import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.bean.UpdateViewPagerBean;
 import com.ckkj.enjoy.client.NetworkUtil;
+import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 import com.ckkj.enjoy.ui.music.PlayingActivity;
 
 import java.io.IOException;
@@ -47,6 +50,8 @@ public class MediaPlayService extends Service {
     private MediaPlayer mediaPlayer;
     //播放的时间
     private int currentTime=0;
+    //播放的数量
+    private int num=0;
     //播放歌曲在列表中的索引
     private int position = 0;
     //当前歌曲的时长
@@ -140,6 +145,7 @@ public class MediaPlayService extends Service {
      */
     public void playSong(int position, boolean isLocal) {
         this.position = position;
+        num++;
         SongDetailInfo info = musiclist.get(position);
         if (songDetailInfo == null || !info.getSonginfo().getSong_id().equals(songDetailInfo.getSonginfo().getSong_id())) {
             //不是同一首歌
@@ -158,7 +164,10 @@ public class MediaPlayService extends Service {
             startPlayingActivity(songDetailInfo);
 
         }
-
+      /* Intent intent=new Intent(MediaPlayService.this, LastPlayMusicActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putInt("num",num);
+        intent.putExtra("bundle",bundle);*/
 
     }
 
@@ -168,6 +177,7 @@ public class MediaPlayService extends Service {
      * @param info 对应的音乐信息
      */
     private void startPlayingActivity(SongDetailInfo info) {
+
         Intent intent = new Intent(MediaPlayService.this, PlayingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //时长
@@ -189,6 +199,7 @@ public class MediaPlayService extends Service {
         intent.putExtra("author", author);
         intent.putExtra("picUrl", picUrl);
         startActivity(intent);
+        //EventBus.getDefault().post(info);
     }
     /**
      * 给PlayingActivity传送SongUpdateInfo列表

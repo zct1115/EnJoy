@@ -21,8 +21,10 @@
     <application
         android:name=".app.AppApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -49,9 +51,10 @@
         <activity android:name=".ui.movie.ActorActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.movie.NewMoiveActivity" />
-        <activity android:name=".ui.music.MusicActivity"></activity>
-        <activity android:name=".ui.music.MusicRankingListDetailActivity"></activity>
-        <activity android:name=".ui.music.PlayingActivity"></activity>
+        <activity android:name=".ui.music.MusicActivity" />
+        <activity android:name=".ui.music.MusicRankingListDetailActivity" />
+        <activity android:name=".ui.music.MusicSongListDetailActivity" />
+        <activity android:name=".ui.music.PlayingActivity" />
 
         <service
             android:name=".sensorcollection.service.SensorService"
@@ -84,6 +87,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.music.LastPlayMusicActivity"></activity>
     </application>
 
 </manifest>

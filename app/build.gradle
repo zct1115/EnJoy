@@ -37,9 +37,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.1.0'
-    testCompile 'junit:junit:4.12'
     //外部包
     compile files('libs/commons-httpclient-3.1.jar')
     compile files('libs/fastjson-1.2.2-sources.jar')
@@ -47,51 +44,55 @@ dependencies {
     compile files('libs/log4j-1.2.17.jar')
 
     //阿里巴巴热修复
-    compile 'com.aliyun.ams:alicloud-android-hotfix:3.1.2'
     //卡片视图
-    compile 'com.android.support:cardview-v7:25.1.0'
     //RecycleView
-    compile 'com.android.support:recyclerview-v7:25.1.0'
     //视图绑定 butterknife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     //glide图片处理框架
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     //Eventbus事件
-    compile 'de.greenrobot:eventbus:3.0.0-beta1'
     //侧滑删除Item
-    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.1.0'
     //引入okhttp
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
     //引入retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
     //引入rxjava
-    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
     //引入Log拦截器，方便DEBUG模式输出log信息
-    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     //引入rxjava适配器，方便rxjava与retrofit的结合
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     //引入json转换器，方便将返回的数据转换为json格式
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     //引入rxandroid
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     //引入IRecycleView
-    compile 'com.github.Aspsine:IRecyclerView:0.0.5'
     //banner轮播图控件
-    compile 'com.youth.banner:banner:1.4.9'
     //PercentRelativeLayout百分比布局
-    compile 'com.android.support:percent:25.1.0'
     //FlexboxLayout 聪明的UI布局
-    compile 'com.google.android:flexbox:0.3.0-alpha2'
     //RatingBar
-    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
     //极光推送
     // 此处以JPush 3.0.5 版本为例。
     // 此处以JCore 1.1.2 版本为例。
+    //XRecycleView
+    //BaseRecycleView
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.aliyun.ams:alicloud-android-hotfix:3.1.2'
+    compile 'com.android.support:cardview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'de.greenrobot:eventbus:3.0.0-beta1'
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.github.Aspsine:IRecyclerView:0.0.5'
+    compile 'com.youth.banner:banner:1.4.9'
+    compile 'com.android.support:percent:25.1.0'
+    compile 'com.google.android:flexbox:0.3.0-alpha2'
+    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
     compile 'cn.jiguang.sdk:jpush:3.0.5'
     compile 'cn.jiguang.sdk:jcore:1.1.2'
-    //XRecycleView
     compile 'com.jcodecraeer:xrecyclerview:1.3.2'
-    //BaseRecycleView
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

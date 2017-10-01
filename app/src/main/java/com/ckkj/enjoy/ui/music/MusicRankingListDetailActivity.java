@@ -11,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -153,8 +154,10 @@ public class MusicRankingListDetailActivity extends BaseActivityWithoutStatus im
             }
 
             if (info.getSonginfo() == null) {
+
                 // TODO: 2017/5/10 为空 不能播放 后续需要处理
             } else {
+                Log.d("MusicRankingListDetailA", "info.getSonginfo():" + info.getSonginfo());
                 String song_id = info.getSonginfo().getSong_id();
                 Integer position = positionMap.get(song_id);
                 mInfos[position] = info;
@@ -168,9 +171,9 @@ public class MusicRankingListDetailActivity extends BaseActivityWithoutStatus im
                     }
                     mService.addMusicList(mInfos[i]);
                 }
-                LoadingDialog.cancelDialogForLoading();
-            }
 
+            }
+            LoadingDialog.cancelDialogForLoading();
 
         }
     }

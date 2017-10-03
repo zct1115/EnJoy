@@ -39,19 +39,27 @@ public class NewMovieAdapter extends RecyclerView.Adapter<NewMovieAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.textView.setText(data.get(position).getOriginal_title());
-        ImageLoaderUtils.display(mcontext,holder.imageView,data.get(position).getImages().getLarge());
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OnItemClickListener.OnItemClick((ImageView) v,position,data.get(position).getId());
-            }
-        });
+        if(data!=null){
+            holder.textView.setText(data.get(position).getOriginal_title());
+            ImageLoaderUtils.display(mcontext,holder.imageView,data.get(position).getImages().getLarge());
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OnItemClickListener.OnItemClick((ImageView) v,position,data.get(position).getId());
+                }
+            });
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        if(data!=null){
+            return data.size();
+        }else {
+            return 5;
+        }
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

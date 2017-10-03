@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ckkj.enjoy.app.AppApplication;
 import com.ckkj.enjoy.app.AppContent;
+import com.ckkj.enjoy.bean.Song;
 import com.ckkj.enjoy.bean.SongDetailInfo;
 import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.bean.UpdateViewPagerBean;
@@ -164,11 +165,6 @@ public class MediaPlayService extends Service {
             startPlayingActivity(songDetailInfo);
 
         }
-      /* Intent intent=new Intent(MediaPlayService.this, LastPlayMusicActivity.class);
-        Bundle bundle=new Bundle();
-        bundle.putInt("num",num);
-        intent.putExtra("bundle",bundle);*/
-
     }
 
     /**
@@ -198,8 +194,9 @@ public class MediaPlayService extends Service {
         intent.putExtra("title", title);
         intent.putExtra("author", author);
         intent.putExtra("picUrl", picUrl);
+        EventBus.getDefault().post(new Song(info));
         startActivity(intent);
-        //EventBus.getDefault().post(info);
+
     }
     /**
      * 给PlayingActivity传送SongUpdateInfo列表

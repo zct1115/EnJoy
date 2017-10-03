@@ -50,6 +50,7 @@ import com.ckkj.enjoy.widget.LoadingDialog;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -315,6 +316,13 @@ public class MusicSongListDetailActivity extends BaseActivityWithoutStatus imple
             }
             Bitmap bitmap = BitmapFactory.decodeStream(mIs);
             applyBlur(bitmap, mImageView);
+
+            try {
+                mIs.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
     }

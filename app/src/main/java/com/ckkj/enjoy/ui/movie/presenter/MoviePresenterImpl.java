@@ -95,15 +95,15 @@ public class MoviePresenterImpl implements MoviePresenter {
      */
     @Override
     public void getNewMovie(int count, int start) {
-        model.getnewMovie(count,start).subscribe(new Observer<NewMovie>() {
+        model.getnewMovie(count,start).subscribe(new Observer<List<NewMovie.SubjectsBean>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(NewMovie newMovie) {
-                mMovieView.returnNewMovie(newMovie);
+            public void onNext(List<NewMovie.SubjectsBean> subjectsBeen) {
+                mMovieView.returnNewMovie(subjectsBeen);
             }
 
             @Override

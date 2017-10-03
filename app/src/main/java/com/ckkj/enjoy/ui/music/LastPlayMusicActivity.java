@@ -4,30 +4,39 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ckkj.enjoy.R;
+import com.ckkj.enjoy.base.BaseActivity;
+import com.ckkj.enjoy.bean.Song;
 import com.ckkj.enjoy.bean.SongDetailInfo;
+
+import org.apache.log4j.chainsaw.Main;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
-public class LastPlayMusicActivity extends AppCompatActivity {
+public class LastPlayMusicActivity extends BaseActivity {
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_last_play_music);
-        Bundle bundle=getIntent().getBundleExtra("bundle");
-        int t=bundle.getInt("num");
-        Log.d("LastPlayMusicActivity", "t:" + t);
+    public void initView() {
+
     }
 
-  /*  @Subscribe
-    public void getLastMusic(SongDetailInfo songDetailInfo){
-        List<SongDetailInfo> list=new ArrayList<>();
-        list.add(songDetailInfo);
-        Log.d("LastPlayMusicActivity", "list.size():" + list.size());
-    }*/
+    @Override
+    public void initPresenter() {
+
+    }
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.activity_last_play_music;
+    }
+
+
 }

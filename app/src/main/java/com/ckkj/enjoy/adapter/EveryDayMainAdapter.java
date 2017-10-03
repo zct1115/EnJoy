@@ -42,10 +42,10 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     private List<String> mImages = new ArrayList<>();
-    private NewMovie mnewMovie;
+    private List<NewMovie.SubjectsBean> mnewMovie;
 
 
-    public EveryDayMainAdapter(Context context, NewMovie newMovie) {
+    public EveryDayMainAdapter(Context context, List<NewMovie.SubjectsBean>  newMovie) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.mnewMovie=newMovie;
@@ -123,7 +123,7 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void setMovieValues(MovieViewHolder holder, int position) {
         RecyclerView.LayoutManager manager=new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
-        NewMovieAdapter adapter=new NewMovieAdapter(mnewMovie.getSubjects(),context) ;
+        NewMovieAdapter adapter=new NewMovieAdapter(mnewMovie,context) ;
         adapter.setOnItemDetilsClickListener(new MovieDetailAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(ImageView view, int position, String viewid) {

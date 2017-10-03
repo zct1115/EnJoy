@@ -40,11 +40,13 @@ import com.ckkj.enjoy.broadcastreceiver.ProgressReceiver;
 import com.ckkj.enjoy.service.MediaPlayService;
 import com.ckkj.enjoy.service.MediaServiceConnection;
 import com.ckkj.enjoy.ui.music.fragment.RoundFragment;
+import com.ckkj.enjoy.ui.music.model.DownLoadModel;
 import com.ckkj.enjoy.utils.StatusBarSetting;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,10 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
     private ProgressReceiver mReceiver;
     private int mPosition;
     private boolean mIsPlaying;
+
+
+    private boolean flag=false;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -251,6 +257,8 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
         mIvPlayingNext.setOnClickListener(this);
         mIvPlayingPre.setOnClickListener(this);
         mIvPlayingMode.setOnClickListener(this);
+        mIvPlayingFav.setOnClickListener(this);
+        mIvPlayingDown.setOnClickListener(this);
         mSbPlaySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -351,6 +359,7 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
                     return;
                 }
                 mViewPager.setCurrentItem(item - 1);
+                break;
             }
             case R.id.iv_playing_mode: {
                 switch (mConnection.mMediaPlayService.getPlayMode()) {
@@ -384,8 +393,24 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
                     }
 
                 }
-
+                break;
             }
+            case R.id.iv_playing_fav: {
+                if (!flag) {
+                    mIvPlayingFav.setImageResource(R.drawable.ic_favorite);
+                    Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+                    flag = true;
+                } else {
+                    mIvPlayingFav.setImageResource(R.drawable.play_love);
+                    Toast.makeText(this, "取消收藏", Toast.LENGTH_SHORT).show();
+                    flag = false;
+                }
+
+                break;
+            }
+            case R.id.iv_playing_down:
+               // new DownLoadModel(1).downLoad();
+                break;
         }
 
     }
@@ -437,6 +462,12 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
             }
             Bitmap bitmap = BitmapFactory.decodeStream(mIs);
             applyBlur(bitmap, mImageView);
+
+            try {
+                mIs.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     }

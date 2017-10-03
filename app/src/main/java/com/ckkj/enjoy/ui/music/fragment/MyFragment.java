@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.adapter.MusicMyAdapter;
 import com.ckkj.enjoy.base.BaseFragment;
 import com.ckkj.enjoy.bean.MusicMyItem;
+import com.ckkj.enjoy.bean.Song;
+import com.ckkj.enjoy.bean.SongDetailInfo;
+import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 
 import java.util.ArrayList;
@@ -23,6 +27,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by Ting on 2017/9/25.
@@ -38,6 +45,9 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
     private List<MusicMyItem> mList;
     private Context mcontext;
     private MusicMyAdapter mMusicMyAdapter;
+    private int count=0;
+
+    private List<SongDetailInfo.SonginfoBean> list=new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
@@ -46,9 +56,13 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
 
     @Override
     protected void initView() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mcontext = getActivity();
         initData();
         setRecycle();
+
     }
 
     private void setRecycle() {
@@ -64,7 +78,6 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
     }
 
     private void initData() {
-        // TODO: 2017/9/25 待解决
         mList = new ArrayList<>();
         MusicMyItem item1 = new MusicMyItem();
         item1.setTitle("本地音乐");
@@ -120,5 +133,12 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
 
                 break;
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void getLastMusic(Song info){
+        list.add(info.getSongDetailInfo().getSonginfo());
+        Log.d("MyFragment", "list.size():" + list.size());
+
+
     }
 }

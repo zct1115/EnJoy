@@ -191,8 +191,9 @@ public class MovieDetilsActivity extends BaseActivity implements MovieView,Movie
     }
 
     @Override
-    public void returnNewMovie(NewMovie newMovie) {
+    public void returnNewMovie(List<NewMovie.SubjectsBean> newMovie) {
 
     }
+
 
 }

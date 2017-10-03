@@ -16,5 +16,5 @@ public interface MovieView {
 
     void returnMusicInfoDetils(MovieDetils movieDetils);
 
-    void returnNewMovie(NewMovie newMovie);
+    void returnNewMovie(List<NewMovie.SubjectsBean> newMovie);
 }

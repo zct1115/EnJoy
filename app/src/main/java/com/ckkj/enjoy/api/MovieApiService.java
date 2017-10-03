@@ -42,7 +42,7 @@ public interface MovieApiService {
     Observable<ActorDetils> getActorById(@Path("id") String id);
 
    /*http://api.douban.com/v2/movie/coming_soon*/
-   @GET("v2/movie/coming_soon?")
+   @GET("v2/movie/coming_soon")
     Observable<NewMovie> getNewMovie(@Query("count") int count, @Query("start") int start);
 
 

@@ -62,13 +62,13 @@ public class MovieModel implements MovieImp {
      * @return
      */
     @Override
-    public Observable<NewMovie> getnewMovie(int count, int start) {
+    public Observable<List<NewMovie.SubjectsBean>> getnewMovie(int count, int start) {
         RetrofitClient retrofitClient=RetrofitClient.getInstance(AppApplication.getAppContext(),MovieApiService.MOVIE_URL);
         MovieApiService api=retrofitClient.create(MovieApiService.class);
-        return api.getNewMovie(count,start).map(new Function<NewMovie, NewMovie>() {
+        return api.getNewMovie(count,start).map(new Function<NewMovie, List<NewMovie.SubjectsBean>>() {
             @Override
-            public NewMovie apply(NewMovie newMovie) throws Exception {
-                return newMovie;
+            public List<NewMovie.SubjectsBean> apply(NewMovie newMovie) throws Exception {
+                return newMovie.getSubjects();
             }
         }).compose(retrofitClient.schedulersTransformer);
     }

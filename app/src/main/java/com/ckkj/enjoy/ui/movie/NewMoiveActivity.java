@@ -64,7 +64,7 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("即将上映电影");
         LoadingDialog.showDialogForLoading(this);
-        moviePresenter.getNewMovie(5,0);
+        moviePresenter.getNewMovie(15,0);
 
         /*回退键触发事件*/
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -104,10 +104,10 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
     public void returnMusicInfoDetils(MovieDetils movieDetils) {}
 
     @Override
-    public void returnNewMovie(NewMovie newMovie) {
-        movies = newMovie.getSubjects();
+    public void returnNewMovie(List<NewMovie.SubjectsBean> newMovie) {
+        movies = newMovie;
        /* 初始化数据*/
-        initData(newMovie.getSubjects());
+        initData(newMovie);
         LoadingDialog.cancelDialogForLoading();
     }
 

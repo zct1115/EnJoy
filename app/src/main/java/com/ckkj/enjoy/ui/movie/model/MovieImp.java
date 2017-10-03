@@ -15,6 +15,6 @@ import io.reactivex.Observable;
 public interface MovieImp {
     Observable<List<Movie.SubjectsBean>> getHotMovie(int count,int start);
     Observable<MovieDetils> getMovieById(String id);
-    Observable<NewMovie> getnewMovie(int count,int start);
+    Observable<List<NewMovie.SubjectsBean>> getnewMovie(int count,int start);
 
 }

@@ -36,6 +36,7 @@ import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,7 +54,7 @@ public class EveryDayFragment extends BaseFragment implements EveryDayMainAdapte
     private EveryDayMainAdapter adapter;
     private MoviePresenter presenter;
     private Context mcontext;
-    private NewMovie newmovie;
+    private List<NewMovie.SubjectsBean> data=new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
@@ -70,6 +71,7 @@ public class EveryDayFragment extends BaseFragment implements EveryDayMainAdapte
         presenter=new MoviePresenterImpl(this);
         /*NewMovie newMovie=(NewMovie) getArguments().getSerializable("NewMovie");*/
         presenter.getNewMovie(5,0);
+        initRecycle(data);
 
     }
 
@@ -128,11 +130,15 @@ public class EveryDayFragment extends BaseFragment implements EveryDayMainAdapte
     }
 
     @Override
-    public void returnNewMovie(NewMovie newMovie) {
-        this.newmovie=newMovie;
-        initRecycle(newmovie);
+    public void returnNewMovie(List<NewMovie.SubjectsBean> newMovie) {
+        if(newMovie!=null){
+            adapter.notifyDataSetChanged();
+
+        }
+        initRecycle(newMovie);
+
     }
-    private void initRecycle(NewMovie newMovie) {
+    private void initRecycle(List<NewMovie.SubjectsBean> newMovie) {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         adapter=new EveryDayMainAdapter(mcontext,newMovie);
         adapter.setOnItemClickListenr(this);

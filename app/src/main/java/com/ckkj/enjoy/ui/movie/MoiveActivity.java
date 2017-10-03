@@ -141,9 +141,10 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
     public void returnMusicInfoDetils(MovieDetils movieDetils) {}
 
     @Override
-    public void returnNewMovie(NewMovie newMovie) {
+    public void returnNewMovie(List<NewMovie.SubjectsBean> newMovie) {
 
     }
+
 
     /**
      * 获取布局ID

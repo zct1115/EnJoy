@@ -4,6 +4,7 @@ import com.ckkj.enjoy.bean.ActorDetils;
 import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.MovieDetils;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.bean.OtherMovie;
 
 
 import java.util.List;
@@ -41,9 +42,18 @@ public interface MovieApiService {
     @GET("v2/movie/celebrity/{id}")
     Observable<ActorDetils> getActorById(@Path("id") String id);
 
-   /*http://api.douban.com/v2/movie/coming_soon*/
+    /**
+     * 获取最新电影
+     * @param count
+     * @param start
+     * @return
+     */
+   /*http://api.douban.com/v2/movie/coming_soon 没有权限*/
    @GET("v2/movie/coming_soon")
     Observable<NewMovie> getNewMovie(@Query("count") int count, @Query("start") int start);
 
+    /*v2/movie/us_box */
+   @GET("v2/movie/us_box")
+    Observable<OtherMovie>getOtherMovie();
 
 }

@@ -9,77 +9,75 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ckkj.enjoy.R;
-import com.ckkj.enjoy.bean.ActorDetils;
-import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.bean.BookBean;
 import com.ckkj.enjoy.bean.OtherMovie;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
 
 import java.util.List;
 
 
-public class NewMovieAdapter extends RecyclerView.Adapter<NewMovieAdapter.ViewHolder> {
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
 
 
-    public List<OtherMovie.SubjectsBean> data=null;
+    public List<BookBean.BooksBean> data=null;
     private Context mcontext;
 
-    private MovieDetailAdapter.OnItemClickListener OnItemClickListener;
+    private OnItemClickListener OnItemClickListener;
 
 
-    public NewMovieAdapter(List<OtherMovie.SubjectsBean> data, Context context) {
+    public BookListAdapter(List<BookBean.BooksBean> data, Context context) {
         this.data = data;
         this.mcontext=context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_content,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_list,parent,false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if(data!=null){
-            holder.textView.setText(data.get(position).getSubject().getTitle());
-            ImageLoaderUtils.display(mcontext,holder.imageView,data.get(position).getSubject().getImages().getLarge());
+        holder.textView.setText(data.get(position).getTitle());
+        holder.tag.setText(data.get(position).getRating().getAverage());
+        ImageLoaderUtils.display(mcontext,holder.imageView,data.get(position).getImages().getLarge());
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OnItemClickListener.OnItemClick((ImageView) v,position,data.get(position).getSubject().getId());
+                    OnItemClickListener.OnItemClick((ImageView) v,position,data.get(position).getId());
                 }
             });
-        }
 
     }
 
     @Override
     public int getItemCount() {
-        if(data!=null){
-            return data.size();
-        }else {
-            return 5;
-        }
+
+        return data.size();
+
 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public TextView textView;
+        public TextView tag;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.name);
-            imageView=(ImageView) itemView.findViewById(R.id.img);
+            imageView=(ImageView) itemView.findViewById(R.id.bookimg);
+            tag = (TextView) itemView.findViewById(R.id.tag);
 
         }
     }
     public interface OnItemClickListener {
-        void  OnItemClick(ImageView view,int position, String viewid);
+        void  OnItemClick(ImageView view, int position, String viewid);
     }
 
 
-    public void setOnItemDetilsClickListener(MovieDetailAdapter.OnItemClickListener mOnItemClickListener) {
+    public void setOnBookClickListener(OnItemClickListener mOnItemClickListener) {
         this.OnItemClickListener = mOnItemClickListener;
     }
 

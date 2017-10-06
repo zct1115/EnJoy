@@ -87,7 +87,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.music.LastPlayMusicActivity"></activity>
+        <activity android:name=".ui.music.LastPlayMusicActivity" />
+        <activity android:name=".ui.book.BookListActivity" />
+        <activity android:name=".ui.book.BookDetilsActivity"></activity>
     </application>
 
 </manifest>

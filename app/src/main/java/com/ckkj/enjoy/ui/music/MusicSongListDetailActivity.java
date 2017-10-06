@@ -43,6 +43,7 @@ import com.ckkj.enjoy.service.MediaPlayService;
 import com.ckkj.enjoy.service.MediaServiceConnection;
 import com.ckkj.enjoy.ui.music.presenter.MusicSongListDetailPresenterImpl;
 import com.ckkj.enjoy.ui.music.view.MusicSongListDetailView;
+import com.ckkj.enjoy.utils.Bimp;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
 import com.ckkj.enjoy.utils.StatusBarSetting;
 import com.ckkj.enjoy.widget.LoadingDialog;
@@ -271,6 +272,7 @@ public class MusicSongListDetailActivity extends BaseActivityWithoutStatus imple
         }
         tvSonglistDetail.setText(stringBuffer);
         new PathAsyncTask(albumArt).execute(photoUrl);
+
         mConnection = new MediaServiceConnection();
         if (mIntent == null) {
             mIntent = new Intent(this, MediaPlayService.class);

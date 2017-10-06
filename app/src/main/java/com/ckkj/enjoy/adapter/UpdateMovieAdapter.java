@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.bean.OtherMovie;
 import com.ckkj.enjoy.utils.DisplayUtil;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
 
@@ -20,11 +21,11 @@ import java.util.List;
 
 public class UpdateMovieAdapter extends RecyclerView.Adapter<UpdateMovieAdapter.MovieViewHolder> {
     private Context mContext;
-    private List<NewMovie.SubjectsBean> mData;
+    private List<OtherMovie.SubjectsBean> mData;
     private final LayoutInflater inflater;
     private onItemClickListenr mOnItemClickListenr;
 
-    public UpdateMovieAdapter(Context context, List<NewMovie.SubjectsBean> list) {
+    public UpdateMovieAdapter(Context context, List<OtherMovie.SubjectsBean> list) {
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
         this.mData = list;
@@ -37,18 +38,14 @@ public class UpdateMovieAdapter extends RecyclerView.Adapter<UpdateMovieAdapter.
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, final int position) {
-        NewMovie.SubjectsBean info = mData.get(position);
-        double score = info.getRating().getAverage();
+        OtherMovie.SubjectsBean info = mData.get(position);
+        double score = info.getRank();
         holder.mTvRating.setText(score+"");
-        String name = info.getTitle();
+        String name = info.getSubject().getTitle();
         holder.mTvMovieName.setText(name);
-        String url = info.getImages().getLarge();
+        String url = info.getSubject().getImages().getLarge();
         ImageLoaderUtils.display(mContext,holder.mIvPhoto,url);
-        if(score>5){
-            holder.mIvHot.setVisibility(View.VISIBLE);
-        }else{
-            holder.mIvHot.setVisibility(View.GONE);
-        }
+        holder.mIvHot.setVisibility(View.VISIBLE);
         holder.mRlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/dp_10"
-        android:text="电影预告"
+        android:text="美国大片"
         android:textSize="15dp"
         />
     <TextView

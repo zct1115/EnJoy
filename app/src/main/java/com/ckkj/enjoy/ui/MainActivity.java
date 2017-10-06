@@ -68,9 +68,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void initView() {
         StatusBarSetting.setColorForDrawerLayout(this, draweerLayout, getResources().getColor(R.color.colorPrimary), StatusBarSetting.DEFAULT_STATUS_BAR_ALPHA);
         setToolBar();
+        fab.setVisibility(View.GONE);
         setNavigationView();
         setHomeItemState();
-        fab.setVisibility(View.GONE);
         initfragment();
         // queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
         SophixManager.getInstance().queryAndLoadNewPatch();

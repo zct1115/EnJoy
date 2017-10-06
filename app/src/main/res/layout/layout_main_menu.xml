@@ -78,7 +78,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
-                                android:text="音乐排行榜"
+                                android:text="新歌排行榜"
                                 android:textColor="@color/colorContent"
                                 android:textSize="12sp" />
 

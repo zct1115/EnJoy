@@ -27,6 +27,7 @@ import com.ckkj.enjoy.bean.NewMovie;
 import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.utils.ImageLoaderUtils;
+import com.ckkj.enjoy.utils.StatusBarSetting;
 import com.ckkj.enjoy.widget.LoadingDialog;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -70,7 +71,7 @@ public class MovieDetilsActivity extends BaseActivity implements MovieView,Movie
 
     @Override
     public void initView() {
-
+        StatusBarSetting.setTranslucent(this);
         Intent intent = getIntent();
         String movie = intent.getStringExtra("movie");
         LoadingDialog.showDialogForLoading(this);

@@ -3,6 +3,7 @@ package com.ckkj.enjoy.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class MusicRankingAdapter extends RecyclerView.Adapter<MusicRankingAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MusicRankingListDetailActivity.class);
+                Log.d("MusicRankingAdapter", "position:" + position);
                 if (position + 1 == 5) {
                     intent.putExtra("type", 20);
                 } else if (position + 1 == 8) {

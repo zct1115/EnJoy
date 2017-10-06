@@ -23,6 +23,9 @@ import com.ckkj.enjoy.base.BaseActivity;
 import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.MovieDetils;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.bean.OtherMovie;
+import com.ckkj.enjoy.ui.home.presenter.Imp.OtherMoviePresenterImp;
+import com.ckkj.enjoy.ui.home.view.OtherMovieView;
 import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.widget.LoadingDialog;
@@ -36,7 +39,7 @@ import butterknife.BindView;
 /**
  * 显示电影列表页面
  */
-public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMovieAdapter.onItemClickListenr {
+public class NewMoiveActivity extends BaseActivity implements UpdateMovieAdapter.onItemClickListenr {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,8 +47,8 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
     RecyclerView recycle;
 
     private UpdateMovieAdapter adapter;
-    private MoviePresenterImpl moviePresenter;
-    private List<NewMovie.SubjectsBean> movies = new ArrayList<NewMovie.SubjectsBean>();
+    private List<OtherMovie.SubjectsBean> movies = new ArrayList<OtherMovie.SubjectsBean>();
+    private OtherMovie otherMovie;
 
 
     /**
@@ -53,7 +56,6 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
      */
     @Override
     public void initPresenter() {
-        moviePresenter = new MoviePresenterImpl(this);
     }
 
     /**
@@ -62,10 +64,11 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
     @Override
     public void initView() {
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("即将上映电影");
-        LoadingDialog.showDialogForLoading(this);
-        moviePresenter.getNewMovie(15,0);
-
+        toolbar.setTitle("美国上映大片");
+        Intent intent=getIntent();
+        otherMovie=(OtherMovie) intent.getSerializableExtra("OtherMovie");
+        movies.addAll(otherMovie.getSubjects());
+        initData(movies);
         /*回退键触发事件*/
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +78,7 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
         });
     }
 
-    private void initData(final List<NewMovie.SubjectsBean> movies) {
+    private void initData(final List<OtherMovie.SubjectsBean> movies) {
         /*初始化适配器*/
         adapter = new UpdateMovieAdapter( this,movies);
         /*设置GirdLayoutManager布局，两列，垂直方向*/
@@ -92,24 +95,6 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
         recycle.setAdapter(adapter);
     }
 
-    /**
-     * MVP返回的数据进行处理
-     * @param movie
-     */
-    @Override
-    public void returnMusicInfo(List<Movie.SubjectsBean> movie) {
-    }
-
-    @Override
-    public void returnMusicInfoDetils(MovieDetils movieDetils) {}
-
-    @Override
-    public void returnNewMovie(List<NewMovie.SubjectsBean> newMovie) {
-        movies = newMovie;
-       /* 初始化数据*/
-        initData(newMovie);
-        LoadingDialog.cancelDialogForLoading();
-    }
 
     /**
      * 获取布局ID
@@ -120,21 +105,13 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
         return R.layout.activity_newmoive;
     }
 
-    /**
-     * 入口
-     * @param activity
-     */
-    public static void startAction(Activity activity) {
-        Intent intent = new Intent(activity, NewMoiveActivity.class);
-        activity.startActivity(intent);
-    }
 
 
 
     @Override
     public void onItemClick(int position, ImageView view) {
         Intent intent = new Intent(this, MovieDetilsActivity.class);
-        intent.putExtra("movie", movies.get(position).getId());
+        intent.putExtra("movie", movies.get(position).getSubject().getId());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions options = ActivityOptions
                     .makeSceneTransitionAnimation((Activity) mContext, view, AppContent.TRANSITION_IMAGE_MOVIE);
@@ -146,4 +123,5 @@ public class NewMoiveActivity extends BaseActivity implements MovieView,UpdateMo
             ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
         }
     }
+
 }

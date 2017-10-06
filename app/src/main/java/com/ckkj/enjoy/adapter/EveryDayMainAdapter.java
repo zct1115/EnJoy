@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.bean.OtherMovie;
 import com.ckkj.enjoy.ui.home.tab.EveryDayFragment;
 import com.ckkj.enjoy.utils.GlideLoader;
 import com.ckkj.enjoy.utils.GlideLoaderUrl;
@@ -38,14 +39,13 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_MOVIE_MORE=2;
     private static final int MOVIE=3;
     private static final int TYPE_MUSIC_MORE=4;
-    private static final int TYPE_MUSIC_ITEM=5;
 
 
     private List<String> mImages = new ArrayList<>();
-    private List<NewMovie.SubjectsBean> mnewMovie;
+    private List<OtherMovie.SubjectsBean> mnewMovie;
 
 
-    public EveryDayMainAdapter(Context context, List<NewMovie.SubjectsBean>  newMovie) {
+    public EveryDayMainAdapter(Context context, List<OtherMovie.SubjectsBean>  newMovie) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.mnewMovie=newMovie;
@@ -61,10 +61,8 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return TYPE_MOVIE_MORE;
         }else if(position==3){
             return MOVIE;
-        }else if(position==4){
+        }else{
             return TYPE_MUSIC_MORE;
-        }else {
-            return TYPE_MUSIC_ITEM;
         }
     }
 
@@ -81,8 +79,7 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                return new MovieViewHolder(inflater.inflate(R.layout.layout_new_movie_item, parent, false));
            case TYPE_MUSIC_MORE:
                return new MusicDesViewHolder(inflater.inflate(R.layout.layout_new_music, parent, false));
-           case TYPE_MUSIC_ITEM:
-               return new MusicTransceiver(inflater.inflate(R.layout.layout_new_movie_item,parent,false));
+
        }
        return null;
     }
@@ -99,14 +96,9 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             setMovieDesValues((MovieDesViewHolder)holder,position);
         }else if(holder instanceof MusicDesViewHolder){
             setMusicDesValues((MusicDesViewHolder)holder,position);
-        }else if(holder instanceof MusicTransceiver){
-            setMusicTransceiver((MusicTransceiver)holder,position);
         }
     }
 
-    private void setMusicTransceiver(MusicTransceiver holder, int position) {
-
-    }
 
     private void setMusicDesValues(MusicDesViewHolder holder, int position) {
 
@@ -235,12 +227,4 @@ public class EveryDayMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private class MusicTransceiver extends RecyclerView.ViewHolder {
-        private RecyclerView rv;
-
-        public MusicTransceiver(View v) {
-            super(v);
-            rv= (RecyclerView) v.findViewById(R.id.music_transceiver);
-        }
-    }
 }

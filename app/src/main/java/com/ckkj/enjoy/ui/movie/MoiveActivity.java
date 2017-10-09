@@ -188,7 +188,6 @@ public class MoiveActivity extends BaseActivity implements MovieView,MovieAdapte
 
     @Override
     public void onLoadMore() {
-        Log.d("MoiveActivity", "tt");
 
         if(count<20){
             //moviePresenter.requestHotMovie(count,start);

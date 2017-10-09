@@ -1,12 +1,13 @@
 package com.ckkj.enjoy.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by zct11 on 2017/9/25.
  */
 
-public class SongDetailInfo {
+public class SongDetailInfo implements Serializable {
 
 
     /**
@@ -52,7 +53,7 @@ public class SongDetailInfo {
         this.bitrate = bitrate;
     }
 
-    public static class SonginfoBean {
+    public static class SonginfoBean implements Serializable {
         /**
          * special_type : 0
          * pic_huge :
@@ -398,7 +399,7 @@ public class SongDetailInfo {
         }
     }
 
-    public static class BitrateBean {
+    public static class BitrateBean implements Serializable {
         /**
          * show_link : http://zhangmenshiting.baidu.com/data2/music/134347684/134347684.mp3?xcode=294ea175cde8d4e6c6826868de970894
          * free : 1

@@ -1,6 +1,7 @@
 package com.ckkj.enjoy.ui.music.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.aspsine.irecyclerview.IRecyclerView;
+import com.aspsine.irecyclerview.OnRefreshListener;
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.adapter.MusicMyAdapter;
 import com.ckkj.enjoy.base.BaseFragment;
@@ -21,6 +24,7 @@ import com.ckkj.enjoy.bean.SongDetailInfo;
 import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +39,7 @@ import de.greenrobot.event.ThreadMode;
  * Created by Ting on 2017/9/25.
  */
 
-public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemClickListenr{
+public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemClickListenr,OnRefreshListener{
 
 
     @BindView(R.id.irv_music_my)
@@ -47,7 +51,7 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
     private MusicMyAdapter mMusicMyAdapter;
     private int count=0;
 
-    private List<SongDetailInfo.SonginfoBean> list=new ArrayList<>();
+    private ArrayList<SongDetailInfo.SonginfoBean> list=new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
@@ -69,7 +73,7 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
         mMusicMyAdapter = new MusicMyAdapter(mcontext, mList);
         irvMusicMy.setLayoutManager(new LinearLayoutManager(mcontext));
         // TODO: 2017/4/26  先默认不能刷新
-//        mIrvMusicMy.setOnRefreshListener(this);
+        irvMusicMy.setOnRefreshListener(this);
         mMusicMyAdapter.setOnItemClickListener(this);
         irvMusicMy.setItemAnimator(new DefaultItemAnimator());
         irvMusicMy.setIAdapter(mMusicMyAdapter);
@@ -115,7 +119,9 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
                  break;
              case 1:
                  /*最近播放*/
-                 startActivity(LastPlayMusicActivity.class);
+                Intent intent= new Intent(mcontext,LastPlayMusicActivity.class);
+                 intent.putExtra("song", (Serializable) list);
+                 startActivity(intent);
                  break;
              case 2:
                  /*下载管理*/
@@ -136,9 +142,36 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
     }
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void getLastMusic(Song info){
-        list.add(info.getSongDetailInfo().getSonginfo());
-        Log.d("MyFragment", "list.size():" + list.size());
+        if(list.size()==0){
+            list.add(info.getSongDetailInfo().getSonginfo());
+        }else {
+            for(int i=0;i<list.size();i++){
 
+                if(info.getSongDetailInfo().getSonginfo().getSong_id()==list.get(i).getSong_id()){
+                    list.remove(info.getSongDetailInfo().getSonginfo());
+                }
+            }
+            list.add(info.getSongDetailInfo().getSonginfo());
+        }
+
+
+        Log.d("MyFragment", "list.size():" + list.size());
+        for(int i=0;i<mList.size();i++){
+            if(i==1){
+                mList.get(i).setCount(list.size());
+            }
+        }
+        mMusicMyAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onRefresh() {
+        if(list.size()!=0){
+            mMusicMyAdapter.notifyDataSetChanged();
+
+        }
+        irvMusicMy.setRefreshing(false);
 
     }
 }

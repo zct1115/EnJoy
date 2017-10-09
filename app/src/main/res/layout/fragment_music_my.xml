@@ -7,7 +7,7 @@
     <com.aspsine.irecyclerview.IRecyclerView
             android:id="@+id/irv_music_my"
             app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"
-            app:refreshEnabled="false"
+            app:refreshEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     <ImageView

@@ -39,6 +39,8 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ckkj.enjoy.utils.StatusBarSetting.setTranslucent;
+
 public class BookDetilsActivity extends BaseActivityWithoutStatus implements BookDetilsView {
 
 
@@ -68,18 +70,27 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
     TextView author;
     @BindView(R.id.list)
     TextView list;
-
+    //获取图书id
     private String id;
+
     private static Context mcontext;
+    //图片模糊透明度
     private static int radius = 25;
+
     private BookDetilsPresenter presenter;
 
     @Override
     public void initView() {
+        //设置当前的状态栏为半透明效果
+        setTranslucent(this);
+        //初始化Context
         mcontext=this;
+        //Intent 获取传值
         Intent intent=getIntent();
         id=intent.getStringExtra("bookid");
+        //加载图书信息数据
         presenter.getBookdetils(id);
+        //设置toolbar 回退点击事件
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,8 +114,11 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
     public void getBookdetils(final BookDetailBean bookDetailBean) {
 
         if(bookDetailBean!=null){
+            /*设置数据*/
             title.setText(bookDetailBean.getTitle());
+            //这是采用我封装的Glide图片处理图片
             ImageLoaderUtils.display(this,ivPhoto,bookDetailBean.getImages().getLarge());
+            //异步加载处理网络图片 注意不能在主线程处理耗时操作，否则会导致UI线程阻塞。出现MainThread异常
             new PathAsyncTask(bg).execute(bookDetailBean.getImages().getLarge());
             writer.setText(bookDetailBean.getAuthor().toString());
             content.setText(bookDetailBean.getSummary());
@@ -113,6 +127,10 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
             list.setText(bookDetailBean.getCatalog());
             publicer.setText(bookDetailBean.getPublisher());
             data.setText(bookDetailBean.getPubdate());
+            /*这个是设置滑动状态显示标题
+            * 有三种状态一 EXPANDED展开 二 INTERNEDIATE中间 三 COLLAPSED折叠
+            * 思路判断当前的状态如果当前状态为展开隐藏标题toolbarLayout.setTitle("")，如果当前状态为折叠设置toolbarLayout.setTitle(bookDetailBean.getTitle());
+            * */
             appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
                 @Override
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -133,6 +151,9 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
 
     }
 
+    /**
+     * 异步加载图片，开子线程进行处理
+     */
     private static class PathAsyncTask extends AsyncTask<String, Void, String> {
         private ImageView mImageView;
 
@@ -141,10 +162,12 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
         }
 
         private String mPath;
+        //文件流，注意要及时关闭文件流不然会导致内存溢出的异常
         private FileInputStream mIs;
 
         @Override
         protected String doInBackground(String... params) {
+            //Glide下载网络图片转换为文件流字符串
             FutureTarget<File> future = Glide.with(AppApplication.getAppContext())
                     .load(params[0])
                     .downloadOnly(100, 100);
@@ -162,6 +185,7 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
 
         @Override
         protected void onPostExecute(String s) {
+            //获取的文件流字符串进行解析Bitmap
             super.onPostExecute(s);
             try {
                 mIs = new FileInputStream(s);
@@ -169,6 +193,7 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
                 e.printStackTrace();
             }
             Bitmap bitmap = BitmapFactory.decodeStream(mIs);
+            //高斯模糊处理图片
             applyBlur(bitmap, mImageView);
 
             try {
@@ -176,7 +201,6 @@ public class BookDetilsActivity extends BaseActivityWithoutStatus implements Boo
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
         }
     }

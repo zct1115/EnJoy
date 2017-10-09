@@ -24,6 +24,12 @@ public class BookPresenter implements BookPresenterImp {
         model=new BookModel();
     }
 
+    /**
+     * 获取图书列表
+     * @param tag 关键字
+     * @param start 0
+     * @param count 数量
+     */
     @Override
     public void getBooklist(String tag, int start, int count) {
         model.getBooklist(tag, start, count).subscribe(new Observer<List<BookBean.BooksBean>>() {

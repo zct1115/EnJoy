@@ -19,6 +19,13 @@ import io.reactivex.functions.Function;
  */
 
 public class BookModel implements BookModelImp {
+    /**
+     * 获取图书信息
+     * @param tag  关键字
+     * @param start  0
+     * @param count  数量
+     * @return
+     */
     @Override
     public Observable<List<BookBean.BooksBean>> getBooklist(String tag, int start, int count) {
         RetrofitClient retrofitClient=RetrofitClient.getInstance(AppApplication.getAppContext(), BookApiService.BOOK_URL);
@@ -32,6 +39,11 @@ public class BookModel implements BookModelImp {
         }).compose(retrofitClient.schedulersTransformer);
     }
 
+    /**
+     * 获取图书信息详情
+     * @param id 图书id
+     * @return 图书信息
+     */
     @Override
     public Observable<BookDetailBean> getBookDetils(String id) {
         RetrofitClient retrofitClient=RetrofitClient.getInstance(AppApplication.getAppContext(),BookApiService.BOOK_URL);

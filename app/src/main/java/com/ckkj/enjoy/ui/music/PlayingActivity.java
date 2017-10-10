@@ -409,7 +409,8 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
                 break;
             }
             case R.id.iv_playing_down:
-               // new DownLoadModel(1).downLoad();
+                new DownLoadModel(1).downLoad("http://pic.58pic.com/58pic/13/76/85/69x58PICm2u_1024.jpg",mTitle);
+
                 break;
         }
 

@@ -2,16 +2,12 @@ package com.ckkj.enjoy.ui.music.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.aspsine.irecyclerview.IRecyclerView;
 import com.aspsine.irecyclerview.OnRefreshListener;
@@ -21,7 +17,8 @@ import com.ckkj.enjoy.base.BaseFragment;
 import com.ckkj.enjoy.bean.MusicMyItem;
 import com.ckkj.enjoy.bean.Song;
 import com.ckkj.enjoy.bean.SongDetailInfo;
-import com.ckkj.enjoy.bean.SongUpdateInfo;
+import com.ckkj.enjoy.message.Download;
+import com.ckkj.enjoy.ui.music.DownloadManagerActivity;
 import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 
 import java.io.Serializable;
@@ -29,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
@@ -124,6 +119,7 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
                  startActivity(intent);
                  break;
              case 2:
+                 startActivity(new Intent(mcontext, DownloadManagerActivity.class));
                  /*下载管理*/
                  break;
              case 3:
@@ -174,4 +170,6 @@ public class MyFragment extends BaseFragment implements MusicMyAdapter.onItemCli
         irvMusicMy.setRefreshing(false);
 
     }
+
+
 }

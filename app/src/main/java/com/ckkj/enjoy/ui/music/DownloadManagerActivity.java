@@ -1,23 +1,24 @@
 package com.ckkj.enjoy.ui.music;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.adapter.DownloadAdapter;
 import com.ckkj.enjoy.base.BaseActivity;
 import com.ckkj.enjoy.bean.DownloadItem;
 import com.ckkj.enjoy.client.NetworkUtil;
+import com.ckkj.enjoy.message.Download;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
@@ -28,15 +29,17 @@ import zlc.season.rxdownload2.function.Utils;
 
 public class DownloadManagerActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.recycler)
     PracticalRecyclerView mRecycler;
+    @BindView(R.id.start)
+    Button start;
+    @BindView(R.id.pause)
+    Button pause;
+    @BindView(R.id.content_main)
+    LinearLayout contentMain;
 
     private DownloadAdapter mAdapter;
     private RxDownload rxDownload;
-
-
 
 
     @OnClick({R.id.start, R.id.pause})
@@ -92,6 +95,8 @@ public class DownloadManagerActivity extends BaseActivity {
         if (!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(this, "当前无网络，请检查网络状况", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     @Override
@@ -134,4 +139,5 @@ public class DownloadManagerActivity extends BaseActivity {
                     }
                 });
     }
+
 }

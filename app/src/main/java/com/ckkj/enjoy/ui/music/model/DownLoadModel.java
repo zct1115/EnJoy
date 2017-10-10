@@ -46,10 +46,9 @@ public class DownLoadModel {
      * 后台下载
      * 适合大型文件下载
      * @param url
-     * @param tableName
      * @param name
      */
-    public void downLoad(String url, final String tableName, final String name){
+    public void downLoad(String url, final String name){
         RxDownload.getInstance(AppApplication.getAppContext())
                 .serviceDownload(url, name)
                 .subscribe(new Consumer<Object>() {

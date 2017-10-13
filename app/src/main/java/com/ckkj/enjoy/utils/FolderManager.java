@@ -14,7 +14,7 @@ public class FolderManager {
     /**
      * 应用程序在SD卡上的主目录名称
      */
-    private final static String APP_FOLDER_NAME = "SmartRecom";
+    private final static String APP_FOLDER_NAME = "Enjoy";
     /**
      * 存放图片目录名
      */

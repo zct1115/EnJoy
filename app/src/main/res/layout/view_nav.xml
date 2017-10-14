@@ -7,31 +7,38 @@
                 android:layout_height="150dp"
                 android:background="@drawable/nav_header"
                 >
-    <com.ckkj.enjoy.widget.CircleImageView
-        android:layout_marginLeft="20dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:civ_border_width="2dp"
-        android:id="@+id/iv_user_photo"
-        android:src="@drawable/nav_photo"
-        android:layout_above="@+id/tv_login"
-        android:layout_alignEnd="@+id/tv_login"
-        android:layout_marginEnd="18dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="点击头像登录"
-        android:textColor="@color/black"
-        android:padding="8dp"
-        android:layout_marginLeft="20dp"
-        android:gravity="center"
-        android:id="@+id/tv_login"
-        android:layout_marginStart="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="40dp" />
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <com.ckkj.enjoy.widget.CircleImageView
+            android:layout_marginLeft="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:civ_border_width="2dp"
+            android:id="@+id/iv_user_photo"
+            android:src="@drawable/nav_photo"
+             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:text="点击头像登录"
+            android:paddingLeft="@dimen/dp_10"
+            android:textColor="@color/black"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:id="@+id/tv_login"
+           />
+    </LinearLayout>
+
 
 
 

@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
+    <uses-permission android:name="android.permisssion.CAMERA"></uses-permission>
+
     <application
         android:name=".app.AppApplication"
         android:allowBackup="true"
@@ -91,6 +94,10 @@
         <activity android:name=".ui.book.BookListActivity" />
         <activity android:name=".ui.book.BookDetilsActivity"></activity>
         <activity android:name=".ui.music.DownloadManagerActivity"></activity>
+        <activity android:name=".ui.login.LoginActivity"></activity>
+        <activity android:name=".ui.home.MyInformationActivity"></activity>
+        <activity android:name=".ui.home.FavorMovieActivity"></activity>
+        <activity android:name=".ui.home.FavorMusicActivity"></activity>
     </application>
 
 </manifest>

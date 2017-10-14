@@ -1,5 +1,6 @@
 package com.ckkj.enjoy.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ckkj.enjoy.R;
+import com.ckkj.enjoy.app.AppApplication;
 import com.ckkj.enjoy.base.BaseActivity;
 import com.ckkj.enjoy.base.BaseFragment;
 import com.ckkj.enjoy.base.BaseFragmentAdapter;
@@ -27,11 +30,14 @@ import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.MovieDetils;
 import com.ckkj.enjoy.bean.NewMovie;
 import com.ckkj.enjoy.ui.home.MainFragment;
+import com.ckkj.enjoy.ui.home.MyInformationActivity;
 import com.ckkj.enjoy.ui.home.tab.EveryDayFragment;
+import com.ckkj.enjoy.ui.login.LoginActivity;
 import com.ckkj.enjoy.ui.movie.MoiveActivity;
 import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.ui.music.MusicActivity;
+import com.ckkj.enjoy.utils.SPUtils;
 import com.ckkj.enjoy.utils.StatusBarSetting;
 import com.taobao.sophix.SophixManager;
 
@@ -42,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
 
     @BindView(R.id.navigation)
@@ -62,7 +68,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Intent mIntent;
 
     private NewMovie mnewMovie;
-
+    private AlertDialog mDialog;
 
     @Override
     public void initView() {
@@ -74,6 +80,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initfragment();
         // queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
         SophixManager.getInstance().queryAndLoadNewPatch();
+
+
+    }
+
+    private void updateLoginUI() {
+        Boolean isLogin = SPUtils.getSharedBooleanData(AppApplication.getAppContext(), "islogin");
+        if(isLogin){
+             mMTv_login.setText("zct");
+        }
     }
 
     private void initfragment() {
@@ -100,8 +115,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         View headerView = navigation.getHeaderView(0);
         mIv_photo = (ImageView) headerView.findViewById(R.id.iv_user_photo);
         mMTv_login = (TextView) headerView.findViewById(R.id.tv_login);
+        mIv_photo.setOnClickListener(this);
         navigation.setNavigationItemSelectedListener(this);
+
+
+        updateLoginUI();
     }
+
+
 
 
     @Override
@@ -142,12 +163,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             }
             case R.id.mn_information: {
+                if(SPUtils.getSharedBooleanData(AppApplication.getAppContext(),"islogin")){
+                    //已经登录了
+                    Intent intent = new Intent(MainActivity.this, MyInformationActivity.class);
+                    startActivity(intent);
+
+                }else{
+                    //提示还未登录
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("还未登录！\n\n登录后才能完善个人信息！");
+                    builder.setPositiveButton("知道", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mDialog.dismiss();
+                        }
+                    });
+                    mDialog = builder.create();
+                    mDialog.show();
+                }
+
                 break;
             }
             case R.id.mn_about: {
                 break;
             }
             case R.id.mn_out: {
+                SPUtils.setSharedBooleanData(AppApplication.getAppContext(),"islogin",false);
+                mMTv_login.setText("点击头像登录");
                 break;
             }
             case R.id.mn_guess: {
@@ -197,4 +240,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
+    @Override
+    public void onClick(View view) {
+         switch (view.getId()){
+             case R.id.iv_user_photo:
+                 if(SPUtils.getSharedBooleanData(AppApplication.getAppContext(),"islogin")){
+
+                 }else {
+                     startActivity(LoginActivity.class);
+                 }
+
+                 break;
+         }
+    }
 }

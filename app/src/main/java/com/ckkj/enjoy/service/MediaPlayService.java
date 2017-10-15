@@ -22,8 +22,11 @@ import com.ckkj.enjoy.bean.SongDetailInfo;
 import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.bean.UpdateViewPagerBean;
 import com.ckkj.enjoy.client.NetworkUtil;
+import com.ckkj.enjoy.database.DaoManager;
+import com.ckkj.enjoy.database.music.MusicUtils;
 import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 import com.ckkj.enjoy.ui.music.PlayingActivity;
+import com.music.entity.LastMusic;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -161,6 +164,7 @@ public class MediaPlayService extends Service {
             mediaPlayer.reset();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             play(info.getBitrate().getFile_link(), isLocal);
+
         } else {
             startPlayingActivity(songDetailInfo);
 
@@ -194,6 +198,46 @@ public class MediaPlayService extends Service {
         intent.putExtra("title", title);
         intent.putExtra("author", author);
         intent.putExtra("picUrl", picUrl);
+        MusicUtils musicUtils=new MusicUtils(AppApplication.getAppContext());
+        LastMusic lastMusic=new LastMusic();
+        lastMusic.setAlbum_id(info.getSonginfo().getAlbum_id());
+        lastMusic.setAlbum_no(info.getSonginfo().getAlbum_no());
+        lastMusic.setAlbum_title(info.getSonginfo().getAlbum_title());
+        lastMusic.setAll_artist_id(info.getSonginfo().getAll_artist_id());
+        lastMusic.setAll_artist_ting_uid(info.getSonginfo().getAll_artist_ting_uid());
+        lastMusic.setAll_rate(info.getSonginfo().getAll_rate());
+        lastMusic.setArtist_id(info.getSonginfo().getArtist_id());
+        lastMusic.setAuthor(info.getSonginfo().getAuthor());
+        lastMusic.setBitrate_fee(info.getSonginfo().getBitrate_fee());
+        lastMusic.setCharge(info.getSonginfo().getCharge());
+        lastMusic.setCopy_type(info.getSonginfo().getCopy_type());
+        lastMusic.setHas_mv(info.getSonginfo().getHas_mv());
+        lastMusic.setHas_mv_mobile(info.getSonginfo().getHas_mv_mobile());
+        lastMusic.setHavehigh(info.getSonginfo().getHavehigh());
+        lastMusic.setSong_id(info.getSonginfo().getSong_id());
+        lastMusic.setIs_first_publish(info.getSonginfo().getIs_first_publish());
+        lastMusic.setKorean_bb_song(info.getSonginfo().getKorean_bb_song());
+        lastMusic.setPic_huge(info.getSonginfo().getPic_huge());
+        lastMusic.setTitle(info.getSonginfo().getTitle());
+        lastMusic.setTing_uid(info.getSonginfo().getTing_uid());
+        lastMusic.setSpecial_type(info.getSonginfo().getSpecial_type());
+        lastMusic.setSong_source(info.getSonginfo().getSong_source());
+        lastMusic.setResource_type_ext(info.getSonginfo().getResource_type_ext());
+        lastMusic.setPlay_type(info.getSonginfo().getPlay_type());
+        lastMusic.setPic_small(info.getSonginfo().getPic_small());
+        lastMusic.setPic_radio(info.getSonginfo().getPic_radio());
+        lastMusic.setRelate_status(info.getSonginfo().getRelate_status());
+        lastMusic.setPiao_id(info.getSonginfo().getPiao_id());
+        lastMusic.setPic_big(info.getSonginfo().getPic_big());
+        lastMusic.setLrclink(info.getSonginfo().getLrclink());
+        lastMusic.setPic_premium(info.getSonginfo().getPic_premium());
+        lastMusic.setLearn(info.getSonginfo().getLearn());
+        lastMusic.setToneid(info.getSonginfo().getToneid());
+        Log.d("MediaPlayService", "musicUtils.search(songDetailInfo.getSonginfo().getSong_id()):" + musicUtils.search(songDetailInfo.getSonginfo().getSong_id()));
+        if(musicUtils.search(songDetailInfo.getSonginfo().getSong_id())==true){
+            musicUtils.insertMusic(lastMusic);
+        }
+        Log.d("MediaPlayService", "musicUtils.getlist():" + musicUtils.getlist().size());
         EventBus.getDefault().post(new Song(info));
         startActivity(intent);
 

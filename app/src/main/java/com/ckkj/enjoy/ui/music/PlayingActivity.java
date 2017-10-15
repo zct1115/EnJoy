@@ -1,6 +1,7 @@
 package com.ckkj.enjoy.ui.music;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
@@ -112,7 +114,7 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
     private int mPosition;
     private boolean mIsPlaying;
 
-
+    private AlertDialog mDialog;
     private boolean flag=false;
 
     private Handler mHandler = new Handler() {
@@ -410,6 +412,18 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
             }
             case R.id.iv_playing_down:
                 new DownLoadModel(1).downLoad("http://pic.58pic.com/58pic/13/76/85/69x58PICm2u_1024.jpg",mTitle);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示");
+                builder.setMessage("正在为你下载");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialog.dismiss();
+                    }
+                });
+                mDialog = builder.create();
+                mDialog.show();
+
 
                 break;
         }

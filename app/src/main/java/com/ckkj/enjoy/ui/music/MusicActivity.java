@@ -52,7 +52,9 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener 
         tabs = new ArrayList<>();
         tabs.add(ivBarMy);
         tabs.add(ivBarMusic);
-    }
+
+
+}
 
 
     @Override

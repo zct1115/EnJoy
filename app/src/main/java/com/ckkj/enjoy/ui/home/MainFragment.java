@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Created by HiWin10 on 2017/9/23 0023.
+ * 主页面的fragment
  */
 
 public class MainFragment extends BaseFragment {
@@ -34,8 +34,9 @@ public class MainFragment extends BaseFragment {
     TabLayout tabName;
     @BindView(R.id.main_vg)
     ViewPager mainVg;
-
+    //存放标题
     private ArrayList<String> mTitleList = new ArrayList<>(4);
+    //存放BaseFragment
     private ArrayList<BaseFragment> mFragments = new ArrayList<>(4);
 
     @Override
@@ -45,14 +46,19 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        //初始化mFragments数据
         initFragmentList();
-
+        //设置mFragments 适配器
         BaseFragmentAdapter adapter=new BaseFragmentAdapter(getChildFragmentManager(),mFragments,mTitleList);
         mainVg.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        //设置默认从第0个开始
         mainVg.setCurrentItem(0);
+        //设置页面最大限制为3个
         mainVg.setOffscreenPageLimit(3);
+        //设置tab
         tabName.setTabMode(TabLayout.MODE_FIXED);
+        //tab设置页面联动
         tabName.setupWithViewPager(mainVg);
 
 
@@ -64,12 +70,7 @@ public class MainFragment extends BaseFragment {
         mTitleList.add("享悦");
         mTitleList.add("聆听");
         mTitleList.add("学习");
-        /*NewMovie newMovie=(NewMovie) getArguments().getSerializable("NewMovie");*/
-        EveryDayFragment everyDayFragment=new EveryDayFragment();
-        /*Bundle bundle=new Bundle();
-        bundle.putSerializable("NewMovie",newMovie);
-        everyDayFragment.setArguments(bundle);*/
-        mFragments.add(everyDayFragment);
+        mFragments.add(new EveryDayFragment());
         mFragments.add(new EnjoyFragment());
         mFragments.add(new ListenFragment());
         mFragments.add(new StudyFragment());

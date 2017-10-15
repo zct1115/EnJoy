@@ -39,6 +39,8 @@ public class FavorMovieActivity extends BaseActivityWithoutStatus implements Vie
     Toolbar mToolbar;
     @BindView(R.id.rv_favor)
     RecyclerView mRvFavor;
+
+    //存放电影类型的数组
     private String[] mTypes = {"爱情", "科幻", "青春", "喜剧", "动作", "犯罪", "纪录片", "黑色幽默", "动画", "悬疑", "文艺", "恐怖", "战争", "家庭", "浪漫", "励志", "剧情"};
     private String[] mAreas = {"美国", "日本", "香港", "韩国", "内地", "台湾", "欧洲", "印度", "巴西", "澳大利亚", "爱尔兰", "比利时", "墨西哥", "波兰", "土耳其"};
     private FavorMovieAdapter mAdapter;

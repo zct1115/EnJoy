@@ -2,6 +2,7 @@ package com.ckkj.enjoy.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.ckkj.enjoy.base.BaseFragmentAdapter;
 import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.MovieDetils;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.message.LoginBean;
 import com.ckkj.enjoy.ui.home.MainFragment;
 import com.ckkj.enjoy.ui.home.MyInformationActivity;
 import com.ckkj.enjoy.ui.home.tab.EveryDayFragment;
@@ -37,16 +40,21 @@ import com.ckkj.enjoy.ui.movie.MoiveActivity;
 import com.ckkj.enjoy.ui.movie.presenter.MoviePresenterImpl;
 import com.ckkj.enjoy.ui.movie.view.MovieView;
 import com.ckkj.enjoy.ui.music.MusicActivity;
+import com.ckkj.enjoy.utils.BitmapUtils;
+import com.ckkj.enjoy.utils.ImageLoaderUtils;
 import com.ckkj.enjoy.utils.SPUtils;
 import com.ckkj.enjoy.utils.StatusBarSetting;
 import com.taobao.sophix.SophixManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
@@ -80,8 +88,69 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initfragment();
         // queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
         SophixManager.getInstance().queryAndLoadNewPatch();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+        updateLoginUI();
 
+    }
 
+    /**
+     * 接收到登录成功的消息
+     * @param bean
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onLogInEvent(LoginBean bean) {
+        String url = bean.getUser_photo_url();
+        if(url!=null&&!url.isEmpty()){
+            //更新头像
+            if(mIv_photo!=null){
+                if(url.startsWith("http")){
+                    //网络图片
+                    ImageLoaderUtils.displayRound(MainActivity.this,mIv_photo,url);
+                }else{
+                    //本地图片
+                    final File file = new File(url);
+                    mIv_photo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            mIv_photo.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            int mWidth = mIv_photo.getMeasuredWidth();
+                            int mHeight = mIv_photo.getMeasuredHeight();
+                            Bitmap bitmap = BitmapUtils.decodeBitmapFromFile(file, mWidth, mHeight);
+                            if (bitmap != null) {
+                                //检查是否有被旋转，并进行纠正
+                                int degree = BitmapUtils.getBitmapDegree(file.getAbsolutePath());
+                                if (degree != 0) {
+                                    bitmap = BitmapUtils.rotateBitmapByDegree(bitmap, degree);
+                                }
+                                mIv_photo.setImageBitmap(bitmap);
+                            }
+
+                        }
+                    });
+                }
+                System.out.println("图片url:"+url);
+            }
+        }
+        String nickname = bean.getNickname();
+        if(nickname!=null&&!nickname.isEmpty()){
+            if(mMTv_login!=null){
+                mMTv_login.setText(nickname);
+            }
+        }else{
+            if(mMTv_login!=null){
+                mMTv_login.setText(bean.getUsername());
+            }
+        }
+        mIv_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到完善信息页面
+                Intent intent = new Intent(MainActivity.this, MyInformationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateLoginUI() {

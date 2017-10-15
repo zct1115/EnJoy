@@ -26,7 +26,7 @@ import com.ckkj.enjoy.database.DaoManager;
 import com.ckkj.enjoy.database.music.MusicUtils;
 import com.ckkj.enjoy.ui.music.LastPlayMusicActivity;
 import com.ckkj.enjoy.ui.music.PlayingActivity;
-import com.music.entity.LastMusic;
+import com.enjoy.entity.LastMusic;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;

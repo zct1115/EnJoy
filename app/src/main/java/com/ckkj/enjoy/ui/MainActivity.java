@@ -31,6 +31,7 @@ import com.ckkj.enjoy.base.BaseFragmentAdapter;
 import com.ckkj.enjoy.bean.Movie;
 import com.ckkj.enjoy.bean.MovieDetils;
 import com.ckkj.enjoy.bean.NewMovie;
+import com.ckkj.enjoy.database.login.Login;
 import com.ckkj.enjoy.message.LoginBean;
 import com.ckkj.enjoy.ui.home.MainFragment;
 import com.ckkj.enjoy.ui.home.MyInformationActivity;
@@ -77,11 +78,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private NewMovie mnewMovie;
     private AlertDialog mDialog;
+    private Login login;
 
     @Override
     public void initView() {
         StatusBarSetting.setColorForDrawerLayout(this, draweerLayout, getResources().getColor(R.color.colorPrimary), StatusBarSetting.DEFAULT_STATUS_BAR_ALPHA);
         setToolBar();
+        login=new Login(AppApplication.getAppContext());
         fab.setVisibility(View.GONE);
         setNavigationView();
         setHomeItemState();
@@ -93,6 +96,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         updateLoginUI();
 
+    }
+
+    /**
+     * 初始化登录状态 默认登陆保持7天
+     */
+    private void initLoginState() {
+        Boolean isLogin = SPUtils.getSharedBooleanData(AppApplication.getAppContext(), "islogin");
+        if(isLogin){
+            //查看登录日期有没有保持7天
+            long date = SPUtils.getSharedlongData(AppApplication.getAppContext(), "loginDate");
+            if(System.currentTimeMillis()-date>7*24*3600*1000){
+                SPUtils.setSharedBooleanData(AppApplication.getAppContext(), "islogin",false);
+            }
+        }
     }
 
     /**
@@ -156,7 +173,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void updateLoginUI() {
         Boolean isLogin = SPUtils.getSharedBooleanData(AppApplication.getAppContext(), "islogin");
         if(isLogin){
-             mMTv_login.setText("zct");
+             if(login.getlist().size()==0){
+                 mMTv_login.setText("请完善你的信息");
+             }else {
+                 mMTv_login.setText(login.getlist().get(0).getUsername());
+             }
+
         }
     }
 

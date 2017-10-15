@@ -37,10 +37,12 @@ import com.ckkj.enjoy.app.AppApplication;
 import com.ckkj.enjoy.base.BaseActivity;
 import com.ckkj.enjoy.bean.FavorListBean;
 import com.ckkj.enjoy.bean.InformationBean;
+import com.ckkj.enjoy.database.login.Login;
 import com.ckkj.enjoy.utils.BitmapUtils;
 import com.ckkj.enjoy.utils.CapturePhotoHelper;
 import com.ckkj.enjoy.utils.FolderManager;
 import com.ckkj.enjoy.utils.SPUtils;
+import com.enjoy.entity.LoginInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,8 +91,8 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
     private File tempFile = new File(Environment.getExternalStorageDirectory(), SPUtils.getSharedStringData(AppApplication.getAppContext(), "userid") + ".jpg");
     //保存文件目录
     private final static String EXTRA_RESTORE_PHOTO = "extra_restore_photo";
-    //toast
-    private final static String TAG = MyInformationActivity.class.getSimpleName();
+    //login数据处理
+    private Login login;
     /**
      * 运行时权限申请码
      */
@@ -115,6 +117,8 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
         toolbar.setTitleTextColor(Color.WHITE);
         //toolbar标题设置
         toolbar.setTitle("完善个人信息");
+
+        login = new Login(AppApplication.getAppContext());
         //设置静态数据
         initdata();
         //设置适配器
@@ -127,25 +131,47 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
     private void initdata() {
 
         // TODO: 2017/10/14 从后台获取数据
+
+
         InformationBean bean = new InformationBean();
-        bean.setContent("zct");
         bean.setTitle("头像");
         InformationBean bean1 = new InformationBean();
-        bean1.setContent("zct");
+        if (login.getlist().size() == 0) {
+            bean1.setContent("");
+        } else {
+            bean1.setContent(login.getlist().get(0).getUsername());
+        }
         bean1.setTitle("用户名");
         InformationBean bean2 = new InformationBean();
         bean2.setTitle("年龄");
-        bean2.setContent("23");
+        if (login.getlist().size() == 0) {
+            bean2.setContent("");
+        } else {
+            bean2.setContent(login.getlist().get(0).getAge());
+        }
+
         InformationBean bean3 = new InformationBean();
         bean3.setTitle("性别");
-        bean3.setContent("男");
+        if (login.getlist().size() == 0) {
+            bean3.setContent("");
+        } else {
+            bean3.setContent(login.getlist().get(0).getSex());
+        }
+
         InformationBean bean4 = new InformationBean();
         bean4.setTitle("电影标签");
-        bean4.setContent("悬疑");
+        if (login.getlist().size() == 0) {
+            bean4.setContent("");
+        } else {
+            bean4.setContent(login.getlist().get(0).getMovie_preference());
+        }
         InformationBean bean5 = new InformationBean();
         bean5.setTitle("音乐标签");
-        bean5.setContent("放松、思念");
-
+        if (login.getlist().size() == 0) {
+            bean3.setContent("");
+        } else {
+            bean3.setContent(login.getlist().get(0).getMusic_preference());
+        }
 
         mList.add(bean);
         mList.add(bean1);
@@ -176,6 +202,44 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
      */
     private void saveInforamtion() {
         // TODO: 2017/10/13 待增加
+
+
+        LoginInfo loginInfo = new LoginInfo();
+        if(mList.get(2).getContent()==null){
+            loginInfo.setAge("未设置");
+        }else {
+            loginInfo.setAge(mList.get(2).getContent());
+        }
+        if(mList.get(1).getContent()==null){
+            loginInfo.setUsername("未设置");
+        }else {
+            loginInfo.setUsername(mList.get(1).getContent());
+        }
+        if(mList.get(3).getContent()==null){
+            loginInfo.setSex("未设置");
+        }else {
+            loginInfo.setSex(mList.get(3).getContent());
+        }
+        if(mList.get(4).getContent()==null){
+            loginInfo.setMovie_preference("未设置");
+        }else {
+            loginInfo.setMovie_preference(mList.get(4).getContent());
+        }
+        if(mList.get(5).getContent()==null){
+            loginInfo.setMusic_preference("未设置");
+        }else {
+            loginInfo.setMusic_preference(mList.get(5).getContent());
+        }
+        loginInfo.setUser_photo_url(mList.get(0).getContent());
+
+        if (login.getlist().size() == 0) {
+            login.insert(loginInfo);
+        }else {
+            login.delete();
+            login.insert(loginInfo);
+        }
+
+
     }
 
     @Override
@@ -184,8 +248,8 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
     }
 
     /**
-     *
      * 订阅发送来的数据
+     *
      * @param info
      */
     @Subscribe
@@ -243,6 +307,7 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
 
     /**
      * RecycleView每一项监听事件
+     *
      * @param position
      */
     @Override
@@ -265,12 +330,12 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
                     //首先获取权限，android6.0后需要获取权限才能拍照
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //Android M 处理Runtime Permission
                         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {//检查是否有写入SD卡的授权
-                            Log.i(TAG, "granted permission!");
+                            Log.d("MyInformationActivity", "granted permission!");
                             turnOnCamera();
                         } else {
-                            Log.i(TAG, "denied permission!");
+                            Log.i("MyInformationActivity", "denied permission!");
                             if (ActivityCompat.shouldShowRequestPermissionRationale(MyInformationActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                Log.i(TAG, "should show request permission rationale!");
+                                Log.i("MyInformationActivity", "should show request permission rationale!");
                             }
                             requestPermission();
                         }
@@ -290,12 +355,12 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
                     //首先获取权限
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //Android M 处理Runtime Permission
                         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {//检查是否有写入SD卡的授权
-                            Log.i(TAG, "granted permission!");
+                            Log.i("MyInformationActivity", "granted permission!");
                             turnOnAlbum();
                         } else {
-                            Log.i(TAG, "denied permission!");
+                            Log.i("MyInformationActivity", "denied permission!");
                             if (ActivityCompat.shouldShowRequestPermissionRationale(MyInformationActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                Log.i(TAG, "should show request permission rationale!");
+                                Log.i("MyInformationActivity", "should show request permission rationale!");
                             }
                             requestPermission();
                         }
@@ -560,7 +625,7 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
 
             //更新UI 显示图像
             InformationBean informationBean = mList.get(0);
-            System.out.println("adapter中图片url:" + tempFile.getAbsolutePath().toString());
+            Log.d("MyInformationActivity", "adapter中图片url:" + tempFile.getAbsolutePath().toString());
             informationBean.setContent(tempFile.getAbsoluteFile().toString());
             informationBean.setSet(true);
             mAdapter.notifyItemChanged(0);
@@ -585,6 +650,7 @@ public class MyInformationActivity extends BaseActivity implements InformationAd
 
     /**
      * 权限返回结果
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults

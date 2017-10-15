@@ -3,8 +3,8 @@ package com.ckkj.enjoy.database;
 import android.content.Context;
 
 
-import com.music.dao.DaoMaster;
-import com.music.dao.DaoSession;
+import com.enjoy.dao.DaoMaster;
+import com.enjoy.dao.DaoSession;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -15,7 +15,7 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 public class DaoManager {
 
-    public static final String DB_NAME = "enjoy.sqlite";//数据库名称
+    public static final String DB_NAME = "Myenjoy.sqlite";//数据库名称
     private volatile static DaoManager daoManager;//多线程访问
     private static DaoMaster.DevOpenHelper helper;
     private static DaoMaster daoMaster;

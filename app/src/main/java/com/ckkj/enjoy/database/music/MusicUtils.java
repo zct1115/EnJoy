@@ -3,8 +3,8 @@ package com.ckkj.enjoy.database.music;
 import android.content.Context;
 
 import com.ckkj.enjoy.database.DaoManager;
-import com.music.dao.LastMusicDao;
-import com.music.entity.LastMusic;
+import com.enjoy.dao.LastMusicDao;
+import com.enjoy.entity.LastMusic;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 

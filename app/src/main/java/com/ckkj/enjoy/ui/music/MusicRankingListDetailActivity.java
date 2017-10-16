@@ -154,8 +154,7 @@ public class MusicRankingListDetailActivity extends BaseActivityWithoutStatus im
             }
 
             if (info.getSonginfo() == null) {
-
-                // TODO: 2017/5/10 为空 不能播放 后续需要处理
+                // TODO: 2017/10/10 为空 不能播放 后续需要处理
             } else {
                 Log.d("MusicRankingListDetailA", "info.getSonginfo():" + info.getSonginfo());
                 String song_id = info.getSonginfo().getSong_id();
@@ -173,9 +172,10 @@ public class MusicRankingListDetailActivity extends BaseActivityWithoutStatus im
                 }
 
             }
-            LoadingDialog.cancelDialogForLoading();
+
 
         }
+        LoadingDialog.cancelDialogForLoading();
     }
 
 

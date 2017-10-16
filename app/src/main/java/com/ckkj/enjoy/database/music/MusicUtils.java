@@ -38,6 +38,17 @@ public class MusicUtils {
         return flag;
     }
 
+    public boolean deleteitemMusic(LastMusic lastMusic){
+        boolean flag = false;
+        try {
+            daoManager.getDaoSession().delete(lastMusic);
+            flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
     public List<LastMusic> getlist(){
          return daoManager.getDaoSession().loadAll(LastMusic.class);
     }

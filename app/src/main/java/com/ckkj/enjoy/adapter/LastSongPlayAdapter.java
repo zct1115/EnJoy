@@ -80,10 +80,8 @@ public class LastSongPlayAdapter extends RecyclerView.Adapter<LastSongPlayAdapte
         holder.deleteimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MusicUtils utils=new MusicUtils(AppApplication.getAppContext());
-                LastMusic lastMusic=new LastMusic();
-                lastMusic.setId(data.get(position).getId());
-                utils.deleteitemMusic(lastMusic);
+                mOnItemClickListenr.ondeleteItem(position);
+
             }
         });
 
@@ -120,6 +118,7 @@ public class LastSongPlayAdapter extends RecyclerView.Adapter<LastSongPlayAdapte
 
     public interface onItemClickListenr{
         void onItemClick(int position, ImageView imageView);
+        void ondeleteItem(int position);
     }
     public void setOnItemClickListenr(onItemClickListenr onItemClickListenr){
         this.mOnItemClickListenr = onItemClickListenr;

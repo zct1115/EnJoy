@@ -16,7 +16,7 @@
             android:background="@drawable/ic_add_musicplay"/>
         <ImageView
             android:id="@+id/song_img"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_image_loading"
             android:layout_width="60dp"

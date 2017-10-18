@@ -11,7 +11,7 @@ public class MyClass {
         MyInfo(schema);
         schema.setDefaultJavaPackageDao("com.enjoy.dao");
         try {
-            new DaoGenerator().generateAll(schema,"E:\\android\\EnJoy\\app\\src\\main\\java-gen");
+            new DaoGenerator().generateAll(schema,"C:\\Users\\zct11\\Desktop\\SmartRecom-master\\SmartRecom\\EnJoy\\app\\src\\main\\java-gen");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class MyClass {
         entity.addStringProperty("album_no");
         entity.addStringProperty("resource_type_ext");
         entity.addStringProperty("ting_uid");
-
+        entity.addStringProperty("file_link");
 
 
     }

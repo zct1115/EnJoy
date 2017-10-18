@@ -59,6 +59,7 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
         public final static Property Album_no = new Property(32, String.class, "album_no", false, "ALBUM_NO");
         public final static Property Resource_type_ext = new Property(33, String.class, "resource_type_ext", false, "RESOURCE_TYPE_EXT");
         public final static Property Ting_uid = new Property(34, String.class, "ting_uid", false, "TING_UID");
+        public final static Property File_link = new Property(35, String.class, "file_link", false, "FILE_LINK");
     }
 
 
@@ -108,7 +109,8 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
                 "\"PIC_SMALL\" TEXT," + // 31: pic_small
                 "\"ALBUM_NO\" TEXT," + // 32: album_no
                 "\"RESOURCE_TYPE_EXT\" TEXT," + // 33: resource_type_ext
-                "\"TING_UID\" TEXT);"); // 34: ting_uid
+                "\"TING_UID\" TEXT," + // 34: ting_uid
+                "\"FILE_LINK\" TEXT);"); // 35: file_link
     }
 
     /** Drops the underlying database table. */
@@ -295,6 +297,11 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
         if (ting_uid != null) {
             stmt.bindString(35, ting_uid);
         }
+ 
+        String file_link = entity.getFile_link();
+        if (file_link != null) {
+            stmt.bindString(36, file_link);
+        }
     }
 
     @Override
@@ -475,6 +482,11 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
         if (ting_uid != null) {
             stmt.bindString(35, ting_uid);
         }
+ 
+        String file_link = entity.getFile_link();
+        if (file_link != null) {
+            stmt.bindString(36, file_link);
+        }
     }
 
     @Override
@@ -519,7 +531,8 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
             cursor.isNull(offset + 31) ? null : cursor.getString(offset + 31), // pic_small
             cursor.isNull(offset + 32) ? null : cursor.getString(offset + 32), // album_no
             cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33), // resource_type_ext
-            cursor.isNull(offset + 34) ? null : cursor.getString(offset + 34) // ting_uid
+            cursor.isNull(offset + 34) ? null : cursor.getString(offset + 34), // ting_uid
+            cursor.isNull(offset + 35) ? null : cursor.getString(offset + 35) // file_link
         );
         return entity;
     }
@@ -561,6 +574,7 @@ public class LastMusicDao extends AbstractDao<LastMusic, Long> {
         entity.setAlbum_no(cursor.isNull(offset + 32) ? null : cursor.getString(offset + 32));
         entity.setResource_type_ext(cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33));
         entity.setTing_uid(cursor.isNull(offset + 34) ? null : cursor.getString(offset + 34));
+        entity.setFile_link(cursor.isNull(offset + 35) ? null : cursor.getString(offset + 35));
      }
     
     @Override

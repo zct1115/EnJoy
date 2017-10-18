@@ -46,6 +46,7 @@ public class LastMusic {
     private String album_no;
     private String resource_type_ext;
     private String ting_uid;
+    private String file_link;
 
     @Generated
     public LastMusic() {
@@ -56,7 +57,7 @@ public class LastMusic {
     }
 
     @Generated
-    public LastMusic(Long id, Integer special_type, String pic_huge, String resource_type, String pic_premium, Integer havehigh, String author, String toneid, Integer has_mv, String song_id, String piao_id, String artist_id, String lrclink, String relate_status, Integer learn, String pic_big, Integer play_type, String album_id, String album_title, String bitrate_fee, String song_source, String all_artist_id, String all_artist_ting_uid, String all_rate, Integer charge, String copy_type, Integer is_first_publish, String korean_bb_song, String pic_radio, Integer has_mv_mobile, String title, String pic_small, String album_no, String resource_type_ext, String ting_uid) {
+    public LastMusic(Long id, Integer special_type, String pic_huge, String resource_type, String pic_premium, Integer havehigh, String author, String toneid, Integer has_mv, String song_id, String piao_id, String artist_id, String lrclink, String relate_status, Integer learn, String pic_big, Integer play_type, String album_id, String album_title, String bitrate_fee, String song_source, String all_artist_id, String all_artist_ting_uid, String all_rate, Integer charge, String copy_type, Integer is_first_publish, String korean_bb_song, String pic_radio, Integer has_mv_mobile, String title, String pic_small, String album_no, String resource_type_ext, String ting_uid, String file_link) {
         this.id = id;
         this.special_type = special_type;
         this.pic_huge = pic_huge;
@@ -92,6 +93,7 @@ public class LastMusic {
         this.album_no = album_no;
         this.resource_type_ext = resource_type_ext;
         this.ting_uid = ting_uid;
+        this.file_link = file_link;
     }
 
     public Long getId() {
@@ -372,6 +374,14 @@ public class LastMusic {
 
     public void setTing_uid(String ting_uid) {
         this.ting_uid = ting_uid;
+    }
+
+    public String getFile_link() {
+        return file_link;
+    }
+
+    public void setFile_link(String file_link) {
+        this.file_link = file_link;
     }
 
 }

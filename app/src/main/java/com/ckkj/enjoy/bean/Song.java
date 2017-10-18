@@ -7,10 +7,8 @@ package com.ckkj.enjoy.bean;
 public class Song {
     private SongDetailInfo songDetailInfo;
 
-    public Song(SongDetailInfo songDetailInfo) {
-        this.songDetailInfo = songDetailInfo;
+    public Song() {
     }
-
     public SongDetailInfo getSongDetailInfo() {
         return songDetailInfo;
     }

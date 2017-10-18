@@ -48,6 +48,14 @@ public class MediaPlayService extends Service {
 
     //音乐列表 获取的是音乐详情 还需要进行网络请求 获取在线播放的url
     private List<SongDetailInfo> musiclist=new ArrayList<>();
+
+    private List<LastMusic> lastMusics=new ArrayList<>();
+
+    private LastMusic lastMusic;
+
+
+
+
     //播放音乐对象
     private SongDetailInfo songDetailInfo;
     //MediaPlayer
@@ -171,6 +179,48 @@ public class MediaPlayService extends Service {
         }
     }
 
+    public void playlastSong(int position, boolean isLocal) {
+        this.position = position;
+        num++;
+        LastMusic info = lastMusics.get(position);
+        if (lastMusic == null ) {
+            //不是同一首歌
+            lastMusic = info;
+        }
+        if(lastMusic!=null){
+            mediaPlayer.reset();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            playlast(info.getFile_link(), isLocal);
+            startlastPlayingActivity(lastMusic);
+
+        }
+
+    }
+
+    private void startlastPlayingActivity(LastMusic lastMusic) {
+        Intent intent = new Intent(MediaPlayService.this, PlayingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //时长
+        int duration = 0;
+        //当前位置
+        int currentTime = 0;
+        //歌曲名称
+        String title = lastMusic.getTitle();
+        //演唱者
+        String author = lastMusic.getAuthor();
+        //封面
+        String picUrl = lastMusic.getPic_premium();
+        boolean playing = isPlaying();
+        intent.putExtra("isPlaying",playing);
+        intent.putExtra("duration", duration);
+        intent.putExtra("position",position);
+        intent.putExtra("curPostion", currentTime);
+        intent.putExtra("title", title);
+        intent.putExtra("author", author);
+        intent.putExtra("picUrl", picUrl);
+        startActivity(intent);
+    }
+
     /**
      * 开启PlayingActivity
      *
@@ -233,12 +283,13 @@ public class MediaPlayService extends Service {
         lastMusic.setPic_premium(info.getSonginfo().getPic_premium());
         lastMusic.setLearn(info.getSonginfo().getLearn());
         lastMusic.setToneid(info.getSonginfo().getToneid());
+        lastMusic.setFile_link(info.getBitrate().getFile_link());
         Log.d("MediaPlayService", "musicUtils.search(songDetailInfo.getSonginfo().getSong_id()):" + musicUtils.search(songDetailInfo.getSonginfo().getSong_id()));
         if(musicUtils.search(songDetailInfo.getSonginfo().getSong_id())==true){
             musicUtils.insertMusic(lastMusic);
         }
         Log.d("MediaPlayService", "musicUtils.getlist():" + musicUtils.getlist().size());
-        EventBus.getDefault().post(new Song(info));
+        EventBus.getDefault().post(new Song());
         startActivity(intent);
 
     }
@@ -257,7 +308,6 @@ public class MediaPlayService extends Service {
         }
         return list;
     }
-
 
     /**
      * 音乐播放
@@ -295,7 +345,45 @@ public class MediaPlayService extends Service {
         }
 
 
+    } /**
+     * 音乐播放
+     *
+     * @param musicUrl
+     */
+    private void playlast(String musicUrl, boolean isLocal) {
+        //给予无网络提示
+        if (!NetworkUtil.isNetworkAvailable(AppApplication.getAppContext())) {
+            if (!isLocal) {
+                Toast.makeText(AppApplication.getAppContext(), "没有网络了哟，请检查网络设置", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (null == mediaPlayer) return;
+        if (requestFocus()) {
+            try {
+                currentTime = 0;
+                mediaPlayer.setDataSource(musicUrl);
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnCompletionListener(lastcompletionListener);
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                        currentTime = mp.getCurrentPosition();
+                        duration = mp.getDuration();
+                        //发送广播 通知PlayActivity界面更新UI
+                        es.execute(progressRunnable);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
+
+
 
     /**
      * 播放全部
@@ -398,6 +486,29 @@ public class MediaPlayService extends Service {
         }
     };
 
+    MediaPlayer.OnCompletionListener lastcompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer player) {
+
+            if(play_mode==AppContent.PLAYING_MODE_REPEAT_ALL){
+                //列表循环
+                EventBus.getDefault().post(new UpdateViewPagerBean());
+            }
+            if(play_mode ==AppContent.PLAYING_MODE_REPEAT_CURRENT){
+                //单曲循环
+                playlastSong(position,false);
+            }
+            if(play_mode ==AppContent.PLAYING_MODE_SHUFFLE_NORMAL){
+                //随机播放
+                int temp = new Random().nextInt(lastMusics.size());
+                position = temp;
+                playlastSong(position,false);
+            }
+
+
+        }
+    };
+
     MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer player) {
@@ -451,6 +562,10 @@ public class MediaPlayService extends Service {
         musiclist.add(info);
     }
 
+    public void addlastMusicList(LastMusic last) {
+        lastMusics.add(last);
+    }
+
     /**
      * 清空播放集合
      */
@@ -458,6 +573,9 @@ public class MediaPlayService extends Service {
         musiclist.clear();
     }
 
+    public void clearlastMusicList() {
+        lastMusics.clear();
+    }
 
     /**
      * 设置是否播放全部
@@ -555,6 +673,49 @@ public class MediaPlayService extends Service {
         updateInfo.setAuthor(info.getSonginfo().getAuthor());
         updateInfo.setTitle(info.getSonginfo().getTitle());
         updateInfo.setPicUrl(info.getSonginfo().getPic_premium());
+
+        MusicUtils musicUtils=new MusicUtils(AppApplication.getAppContext());
+        LastMusic lastMusic=new LastMusic();
+        lastMusic.setAlbum_id(info.getSonginfo().getAlbum_id());
+        lastMusic.setAlbum_no(info.getSonginfo().getAlbum_no());
+        lastMusic.setAlbum_title(info.getSonginfo().getAlbum_title());
+        lastMusic.setAll_artist_id(info.getSonginfo().getAll_artist_id());
+        lastMusic.setAll_artist_ting_uid(info.getSonginfo().getAll_artist_ting_uid());
+        lastMusic.setAll_rate(info.getSonginfo().getAll_rate());
+        lastMusic.setArtist_id(info.getSonginfo().getArtist_id());
+        lastMusic.setAuthor(info.getSonginfo().getAuthor());
+        lastMusic.setBitrate_fee(info.getSonginfo().getBitrate_fee());
+        lastMusic.setCharge(info.getSonginfo().getCharge());
+        lastMusic.setCopy_type(info.getSonginfo().getCopy_type());
+        lastMusic.setHas_mv(info.getSonginfo().getHas_mv());
+        lastMusic.setHas_mv_mobile(info.getSonginfo().getHas_mv_mobile());
+        lastMusic.setHavehigh(info.getSonginfo().getHavehigh());
+        lastMusic.setSong_id(info.getSonginfo().getSong_id());
+        lastMusic.setIs_first_publish(info.getSonginfo().getIs_first_publish());
+        lastMusic.setKorean_bb_song(info.getSonginfo().getKorean_bb_song());
+        lastMusic.setPic_huge(info.getSonginfo().getPic_huge());
+        lastMusic.setTitle(info.getSonginfo().getTitle());
+        lastMusic.setTing_uid(info.getSonginfo().getTing_uid());
+        lastMusic.setSpecial_type(info.getSonginfo().getSpecial_type());
+        lastMusic.setSong_source(info.getSonginfo().getSong_source());
+        lastMusic.setResource_type_ext(info.getSonginfo().getResource_type_ext());
+        lastMusic.setPlay_type(info.getSonginfo().getPlay_type());
+        lastMusic.setPic_small(info.getSonginfo().getPic_small());
+        lastMusic.setPic_radio(info.getSonginfo().getPic_radio());
+        lastMusic.setRelate_status(info.getSonginfo().getRelate_status());
+        lastMusic.setPiao_id(info.getSonginfo().getPiao_id());
+        lastMusic.setPic_big(info.getSonginfo().getPic_big());
+        lastMusic.setLrclink(info.getSonginfo().getLrclink());
+        lastMusic.setPic_premium(info.getSonginfo().getPic_premium());
+        lastMusic.setLearn(info.getSonginfo().getLearn());
+        lastMusic.setToneid(info.getSonginfo().getToneid());
+        lastMusic.setFile_link(info.getBitrate().getFile_link());
+        Log.d("MediaPlayService", "musicUtils.search(songDetailInfo.getSonginfo().getSong_id()):" + musicUtils.search(songDetailInfo.getSonginfo().getSong_id()));
+        if(musicUtils.search(songDetailInfo.getSonginfo().getSong_id())==true){
+            musicUtils.insertMusic(lastMusic);
+        }
+        Log.d("MediaPlayService", "musicUtils.getlist():" + musicUtils.getlist().size());
+        EventBus.getDefault().post(new Song());
         updateInfo.setIndex(position);
         System.out.println("发送更新UI的消息，索引为："+position);
         EventBus.getDefault().post(updateInfo);

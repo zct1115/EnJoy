@@ -12,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -124,38 +125,11 @@ public class LastPlayMusicActivity extends BaseActivity implements LastSongPlayA
 
     @Override
     public void onItemClick(int position, ImageView imageView) {
-        mInfos=new LastMusic[data.size()];
-        for(int i=0;i<data.size();i++){
-            String song_id=data.get(i).getSong_id();
-            positionMap.put(song_id,i);
-        }
-        // TODO: 2017/10/18 此处有问题 
-       for(int j=0;j<data.size();j++){
-           if (mMediaBinder != null) {
+        if (mMediaBinder != null) {
                if (mService == null) {
                    mService = mMediaBinder.getMediaPlayService();
                }
-
-               if (data == null) {
-                   // TODO: 2017/10/10 为空 不能播放 后续需要处理
-               } else {
-                   String song_id=data.get(position).getSong_id();
-                   Integer positionid = positionMap.get(song_id);
-                   mInfos[positionid]=data.get(position);
-               }
-               int currentNumber = index.addAndGet(1);
-               if (currentNumber == mInfos.length) {
-                   for (int i = 0; i < mInfos.length; i++) {
-                       if (i == 0) {
-                           //先清除之前的播放集合
-                           mService.clearlastMusicList();
-                       }
-                       mService.addlastMusicList(mInfos[i]);
-                   }
-
-               }
            }
-       }
         isPlayAll = false;
         if (mService != null) {
             mService.setPlayAll(false);

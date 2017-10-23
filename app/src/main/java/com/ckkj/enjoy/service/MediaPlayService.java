@@ -51,10 +51,6 @@ public class MediaPlayService extends Service {
 
     private List<LastMusic> lastMusics=new ArrayList<>();
 
-    private LastMusic lastMusic;
-
-
-
 
     //播放音乐对象
     private SongDetailInfo songDetailInfo;
@@ -90,6 +86,7 @@ public class MediaPlayService extends Service {
         super.onCreate();
         mediaPlayer=getMediaPlayer(AppApplication.getAppContext());
         audioManager= (AudioManager) getSystemService(AUDIO_SERVICE);
+
     }
 
     private MediaPlayer getMediaPlayer(Context context) {
@@ -181,17 +178,14 @@ public class MediaPlayService extends Service {
 
     public void playlastSong(int position, boolean isLocal) {
         this.position = position;
-        num++;
+        MusicUtils utils=new MusicUtils(AppApplication.getAppContext());
+        lastMusics=utils.getlist();
         LastMusic info = lastMusics.get(position);
-        if (lastMusic == null ) {
-            //不是同一首歌
-            lastMusic = info;
-        }
-        if(lastMusic!=null){
+        if(info!=null){
             mediaPlayer.reset();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             playlast(info.getFile_link(), isLocal);
-            startlastPlayingActivity(lastMusic);
+            startlastPlayingActivity(info);
 
         }
 
@@ -562,9 +556,6 @@ public class MediaPlayService extends Service {
         musiclist.add(info);
     }
 
-    public void addlastMusicList(LastMusic last) {
-        lastMusics.add(last);
-    }
 
     /**
      * 清空播放集合
@@ -573,9 +564,6 @@ public class MediaPlayService extends Service {
         musiclist.clear();
     }
 
-    public void clearlastMusicList() {
-        lastMusics.clear();
-    }
 
     /**
      * 设置是否播放全部
@@ -586,14 +574,6 @@ public class MediaPlayService extends Service {
         this.isPlayAll = isPlayAll;
 
     }
-
-    /**
-     * 获取播放全部状态
-     */
-    public boolean isPlayAll() {
-        return isPlayAll;
-    }
-
 
     /**
      * 暂停

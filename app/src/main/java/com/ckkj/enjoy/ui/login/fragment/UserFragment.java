@@ -15,8 +15,10 @@ import android.widget.Toast;
 import com.ckkj.enjoy.R;
 import com.ckkj.enjoy.app.AppApplication;
 import com.ckkj.enjoy.base.BaseFragment;
-import com.ckkj.enjoy.message.LoginBean;
 import com.ckkj.enjoy.ui.MainActivity;
+import com.ckkj.enjoy.ui.login.SignUpActivity;
+import com.ckkj.enjoy.ui.login.presenter.LoginPresenter;
+import com.ckkj.enjoy.ui.login.view.Login;
 import com.ckkj.enjoy.utils.SPUtils;
 
 import butterknife.BindView;
@@ -28,7 +30,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/10/13.
  */
 
-public class UserFragment extends BaseFragment {
+public class UserFragment extends BaseFragment implements Login {
 
 
     @BindView(R.id.input_email)
@@ -39,7 +41,9 @@ public class UserFragment extends BaseFragment {
     AppCompatButton btnLogin;
     @BindView(R.id.tv_signup)
     TextView tvSignup;
+    Unbinder unbinder;
     private ProgressDialog mProgressDialog;
+    private LoginPresenter presenter;
 
     @Override
     protected int getLayoutResource() {
@@ -48,15 +52,9 @@ public class UserFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        presenter = new LoginPresenter(this);
     }
 
-
-
-    @OnClick(R.id.btn_login)
-    public void onViewClicked() {
-        login();
-    }
 
     private void login() {
         if (!validate()) {
@@ -74,18 +72,20 @@ public class UserFragment extends BaseFragment {
         String userword = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
 
+        presenter.login(userword, password);
 
-
-        if(userword.equals("17875057401")&&password.equals("123456")){
+      /*  if(userword.equals("17875057401")&&password.equals("123456")){
             SPUtils.setSharedBooleanData(getActivity(),"islogin",true);
             startActivity(new Intent(AppApplication.getAppContext(), MainActivity.class));
             getActivity().finish();
         }
-
+*/
 
     }
+
     /**
      * 邮箱，密码是否格式正确
+     *
      * @return
      */
     public boolean validate() {
@@ -117,8 +117,6 @@ public class UserFragment extends BaseFragment {
      */
     public void onLoginFailed() {
         Toast.makeText(getContext(), "登录失败", Toast.LENGTH_SHORT).show();
-
-        btnLogin.setEnabled(true);
     }
 
     /**
@@ -127,5 +125,34 @@ public class UserFragment extends BaseFragment {
     public void onLoginSuccess() {
         btnLogin.setEnabled(true);
     }
+
+    @Override
+    public void getMessage(String msg) {
+        if (msg.equals("登录成功")) {
+            SPUtils.setSharedBooleanData(getActivity(), "islogin", true);
+            startActivity(new Intent(AppApplication.getAppContext(), MainActivity.class));
+            getActivity().finish();
+        } else {
+            mProgressDialog.dismiss();
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+            btnLogin.setEnabled(true);
+        }
+    }
+
+
+
+
+    @OnClick({R.id.btn_login, R.id.tv_signup})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                login();
+                break;
+            case R.id.tv_signup:
+                startActivity(SignUpActivity.class);
+                break;
+        }
+    }
+
 
 }

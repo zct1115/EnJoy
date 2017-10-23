@@ -15,7 +15,7 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 public class DaoManager {
 
-    public static final String DB_NAME = "enjoy.sqlite";//数据库名称
+    public static final String DB_NAME = "myenjoy.sqlite";//数据库名称
     private volatile static DaoManager daoManager;//多线程访问
     private static DaoMaster.DevOpenHelper helper;
     private static DaoMaster daoMaster;

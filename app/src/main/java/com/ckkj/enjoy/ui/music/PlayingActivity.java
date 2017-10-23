@@ -39,6 +39,7 @@ import com.ckkj.enjoy.base.BaseFragment;
 import com.ckkj.enjoy.bean.SongUpdateInfo;
 import com.ckkj.enjoy.bean.UpdateViewPagerBean;
 import com.ckkj.enjoy.broadcastreceiver.ProgressReceiver;
+import com.ckkj.enjoy.client.NetworkUtil;
 import com.ckkj.enjoy.service.MediaPlayService;
 import com.ckkj.enjoy.service.MediaServiceConnection;
 import com.ckkj.enjoy.ui.music.fragment.RoundFragment;
@@ -115,7 +116,7 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
     private boolean mIsPlaying;
 
     private AlertDialog mDialog;
-    private boolean flag=false;
+    private boolean flag = false;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -162,7 +163,7 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
             mAuthor = (String) extras.get("author");
             mPicUrl = (String) extras.get("picUrl");
             mPosition = (int) extras.get("position");
-            mIsPlaying = (boolean)extras.get("isPlaying");
+            mIsPlaying = (boolean) extras.get("isPlaying");
         }
         setToolBar();
         setUI();
@@ -250,9 +251,9 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
             new PathAsyncTask(mIvAlbumart).execute(mPicUrl);
         }
         float rotation = mIvNeedle.getRotation();
-        if(mIsPlaying&&rotation==-30){
+        if (mIsPlaying && rotation == -30) {
             mIvNeedle.setRotation(0);
-        }else if(rotation==0){
+        } else if (rotation == 0) {
             mIvNeedle.setRotation(-30);
         }
         mIvPlayingPlay.setOnClickListener(this);
@@ -342,15 +343,19 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
                 break;
             }
             case R.id.iv_playing_play: {
-
-                if (mConnection.mMediaPlayService.isPlaying()) {
-                    //正在播放 转变为暂停
-                    mIvPlayingPlay.setImageResource(R.drawable.play_rdi_btn_play);
-                    mConnection.mMediaPlayService.pause();
+                if (!NetworkUtil.isNetworkAvailable(AppApplication.getAppContext())) {
+                    Toast.makeText(AppApplication.getAppContext(), "没有网络了哟，请检查网络设置", Toast.LENGTH_SHORT).show();
                 } else {
-                    //正在暂停 转变为播放
-                    mIvPlayingPlay.setImageResource(R.drawable.play_rdi_btn_pause);
-                    mConnection.mMediaPlayService.resume();
+                    if (mConnection.mMediaPlayService.isPlaying()) {
+                        //正在播放 转变为暂停
+                        mIvPlayingPlay.setImageResource(R.drawable.play_rdi_btn_play);
+                        mConnection.mMediaPlayService.pause();
+                    } else {
+                        //正在暂停 转变为播放
+                        mIvPlayingPlay.setImageResource(R.drawable.play_rdi_btn_pause);
+                        mConnection.mMediaPlayService.resume();
+                    }
+
                 }
 
                 break;
@@ -411,7 +416,7 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
                 break;
             }
             case R.id.iv_playing_down:
-                new DownLoadModel(1).downLoad("http://pic.58pic.com/58pic/13/76/85/69x58PICm2u_1024.jpg",mTitle);
+                new DownLoadModel(1).downLoad("http://pic.58pic.com/58pic/13/76/85/69x58PICm2u_1024.jpg", mTitle);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("提示");
                 builder.setMessage("正在为你下载");
@@ -443,20 +448,20 @@ public class PlayingActivity extends BaseActivityWithoutStatus implements View.O
 
         @Override
         protected String doInBackground(String... params) {
-            FutureTarget<File> future=null;
-            if(params[0].isEmpty()){
+            FutureTarget<File> future = null;
+            if (params[0].isEmpty()) {
                 future = Glide.with(AppApplication.getAppContext())
                         .load("http://img.hb.aicdn.com/503f52bdc99b13e7a0ac6fda8f9007ab3a067eb256ab-XjWeNW_fw658")
                         .downloadOnly(100, 100);
-            }else {
-               future = Glide.with(AppApplication.getAppContext())
+            } else {
+                future = Glide.with(AppApplication.getAppContext())
                         .load(params[0])
                         .downloadOnly(100, 100);
             }
 
             try {
-                    File cacheFile = future.get();
-                    mPath = cacheFile.getAbsolutePath();
+                File cacheFile = future.get();
+                mPath = cacheFile.getAbsolutePath();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
